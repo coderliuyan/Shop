@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<plist version="1.0">
+  <card_1001>
+    <name>苹果</name>
+     <Buymoney>1</Buymoney>
+     <Setmoney>2</Setmoney>
+    <Unlock>1</Unlock>
+  </card_1001>
+  <card_1002>
+    <name>橘子</name>
+    <Buymoney>2</Buymoney>
+    <Setmoney>4</Setmoney>
+    <Unlock>3</Unlock>
+  </card_1002>
+  <card_1003>
+    <name>芒果</name>
+    <Buymoney>1</Buymoney>
+    <Setmoney>4</Setmoney>
+    <Unlock>6</Unlock>
+  </card_1003>
+  <card_1004>
+    <name>猕猴桃</name>
+    <Buymoney>3</Buymoney>
+    <Setmoney>7</Setmoney>
+    <Unlock>13</Unlock>
+  </card_1004>
+  <card_1005>
+    <name>草莓</name>
+    <Buymoney>4</Buymoney>
+    <Setmoney>10</Setmoney>
+    <Unlock>17</Unlock>
+  </card_1005>
+  <card_1006>
+    <name>西瓜</name>
+    <Buymoney>3</Buymoney>
+    <Setmoney>10</Setmoney>
+    <Unlock>21</Unlock>
+  </card_1006>
+<card_1007>
+    <name>香蕉</name>
+    <Buymoney>2</Buymoney>
+    <Setmoney>10</Setmoney>
+    <Unlock>25</Unlock>
+  </card_1007>
+<card_1008>
+    <name>火龙果</name>
+    <Buymoney>3</Buymoney>
+    <Setmoney>12</Setmoney>
+    <Unlock>31</Unlock>
+  </card_1008>
+<card_1006>
+    <name>菠萝</name>
+    <Buymoney>4</Buymoney>
+    <Setmoney>14</Setmoney>
+    <Unlock>38</Unlock>
+  </card_1006>
+</plist>

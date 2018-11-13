@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<plist version="1.0">
+  <card_10001>
+    <name>水果货架</name>
+    <Level>1</Level>
+     <money>140</money>
+    <number>null</number>
+    <time>10</time>
+    <power>1</power>
+    <scaleNum>8</scaleNum>
+  </card_10001>
+  <card_10002>
+    <name>水果货架</name>
+    <Level>2</Level>
+    <money>235</money>
+    <number>null</number>
+    <time>50</time>
+    <power>2</power>
+    <scaleNum>22</scaleNum>
+  </card_10002>
+  <card_10003>
+    <name>水果货架</name>
+    <Level>3</Level>
+    <money>420</money>
+    <number>null</number>
+    <time>100</time>
+    <power>3</power>
+    <scaleNum>42</scaleNum>
+  </card_10003>
+  <card_10004>
+    <name>水果货架</name>
+    <Level>4</Level>
+    <money>725</money>
+    <number>null</number>
+    <time>180</time>
+    <power>4</power>
+    <scaleNum>68</scaleNum>
+  </card_10004>
+  <card_10005>
+    <name>水果货架</name>
+    <Level>5</Level>
+    <money>1180</money>
+    <number>null</number>
+    <time>280</time>
+    <power>5</power>
+    <scaleNum>100</scaleNum>
+  </card_10005>
+  <card_20001>
+    <name>饮料货架-LV1</name>
+    <Level>1</Level>
+    <money>120</money>
+    <number>null</number>
+    <time>12</time>
+    <power>1</power>
+    <scaleNum>8</scaleNum>
+  </card_20001>
+  <card_20002>
+    <name>饮料货架-LV2</name>
+    <Level>2</Level>
+    <money>168</money>
+    <number>null</number>
+    <time>60</time>
+    <power>2</power>
+    <scaleNum>22</scaleNum>
+  </card_20002>
+
+
+
+</plist>

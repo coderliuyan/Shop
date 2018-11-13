@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<plist version="1.0">
+  <card_1001>
+    <name>LongguMan</name>
+    <mood>2</mood>
+    <zan>1</zan>
+    <property>null</property>
+  </card_1001>
+  <card_1002>
+    <name>LongguWoman</name>
+    <mood>1</mood>
+    <zan>1</zan>
+    <property>null</property>
+  </card_1002>
+  <card_1003>
+    <name>LongguWoman2</name>
+    <mood>2</mood>
+    <zan>1</zan>
+    <property>null</property>
+  </card_1003>
+  <card_1004>
+    <name>Customer1</name>
+    <mood>2</mood>
+    <zan>1</zan>
+    <property>null</property>
+  </card_1004>
+  <card_1005>
+    <name>Customer2</name>
+    <mood>2</mood>
+    <zan>1</zan>
+    <property>null</property>
+  </card_1005>
+  <card_1006>
+    <name>Customer3</name>
+    <mood>2</mood>
+    <zan>1</zan>
+    <property>null</property>
+  </card_1006>
+</plist>

@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<plist version="1.0">
+  <card_101>
+    <name>面包货架</name>
+    <money>100</money>
+     <type>null</type>
+    <area>1</area>
+    <position>true</position>
+  </card_101>
+  <card_102>
+    <name>甜点货架</name>
+    <money>200</money>
+    <type>null</type>
+    <area>1</area>
+    <position>true</position>
+  </card_102>
+  <card_103>
+    <name>蛋糕货架</name>
+    <money>300</money>
+    <type>null</type>
+    <area>1</area>
+    <position>true</position>
+  </card_103>
+  <card_104>
+    <name>蔬菜货架</name>
+    <money>200</money>
+    <type>null</type>
+    <area>2</area>
+    <position>true</position>
+  </card_104>
+  <card_105>
+    <name>普通人</name>
+    <money>100</money>
+    <type>null</type>
+  </card_105>
+</plist>
