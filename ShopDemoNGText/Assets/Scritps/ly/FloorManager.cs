@@ -79,7 +79,12 @@ public class FloorManager : MonoBehaviour {
                 Debug.Log("到达目的地了");
             }
         }
-	}
+
+        if(Input.GetKeyDown(KeyCode.Q)) {
+
+            BornCustomer();
+        }
+    }
 
     //初始点 16
     int bornIndex = 16;
@@ -196,6 +201,23 @@ public class FloorManager : MonoBehaviour {
 
         Debug.Log("--------------------------");
         return Test(array);
+    }
+
+    ///下面都是要删掉的 测试用
+    ///
+    /// <summary>
+    /// 生成顾客
+    /// </summary>
+    /// 
+   
+    void BornCustomer()
+    {
+
+      
+        GameObject _BornPlace = GameObject.Find("CustomerBornPlace");
+        GameObject CustomerCubeObj = (GameObject)Instantiate(Resources.Load("Test"), _BornPlace.transform.position, Quaternion.Euler(0, 0, 0));
+      
+
     }
 
 
