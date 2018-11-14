@@ -21,7 +21,11 @@ public class GameDataManger : MonoBehaviour {
 	}
     void Awake()
     {
-        _instance = this;
+        if(_instance == null)
+        {
+            _instance = this;
+        }
+        
     }
 	
 	// Update is called once per frame

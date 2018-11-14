@@ -163,7 +163,7 @@ public class SelectPanelUI : MonoBehaviour {
 	}
     void Update()
     {
-        _MoveButton.onClick.Add(new EventDelegate(() => { MoveButton(); }));
+   //     _MoveButton.onClick.Add(new EventDelegate(() => { MoveButton(); }));
     }
     /// <summary>
     /// 结算减少金币方法
@@ -662,7 +662,7 @@ void changeSpriteByImage(GameObject _huojiaobj, string _name)
  GameObject _FloorObj;
  void WelcomeButton()
  {
-        _WelcomeButton.enabled = false;
+     _WelcomeButton.enabled = false;
      _FloorObj = GameObject.Find("地板空节点");
      ////////////////////
     //sex > LongGuFemale  LongGuMale

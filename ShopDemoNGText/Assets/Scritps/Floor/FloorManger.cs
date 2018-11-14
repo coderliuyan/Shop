@@ -40,7 +40,7 @@ public class FloorManger : MonoBehaviour
         {
             if(!temporaryAllFloor.ContainsKey(item.Key))
             {
-            temporaryAllFloor.Add(item.Key,item.Value);
+                 temporaryAllFloor.Add(item.Key,item.Value);
             }
         }
         foreach (var item1 in temporaryAllFloor)

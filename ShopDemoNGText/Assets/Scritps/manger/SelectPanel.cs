@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using ConfigDefine;
 public class SelectPanel : MonoBehaviour {
 
     private readonly string wellcomeBtnPath = @"ShangCheng/GameBeginCstomer/WelcomButton";
@@ -22,9 +22,21 @@ public class SelectPanel : MonoBehaviour {
     }
 
     // Use this for initialization
-    void Start () {
+    void Start ()
+    {
         InitComponet();
 	}
+
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            FloorManager.Instance.FetchFloor();
+            Debug.Log(FloorManager.Instance.floorInterable.Count);
+        }
+    }
 
     void InitComponet()
     {
@@ -39,9 +51,11 @@ public class SelectPanel : MonoBehaviour {
         wellcomeBtn.enabled = false;
         Debug.Log("wellcome  supermarket!");
 
-        Invoke("ShopEnd",5f);
+        Invoke("ShopEnd",Define.SHOP_TIME);
 
     }
+
+
 
 
     void ShopEnd()
@@ -69,10 +83,7 @@ public class SelectPanel : MonoBehaviour {
     }
 
 
-	// Update is called once per frame
-	void Update () {
-		
-	}
+
 }
 
 public class Boss
