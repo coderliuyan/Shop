@@ -620,9 +620,12 @@ void OpenBuyPanelButton(Transform _buypanel, bool OpenOrClose)
      AddShopExpNum(100);
      AddPlayerExpNum(10);
      AddMonryButtoon(1000);
+
+     _WelcomeButton.enabled = true;
+
  }
-    //给精灵动态更改图片方法
- void changeSpriteByImage(GameObject _huojiaobj, string _name)
+//给精灵动态更改图片方法
+void changeSpriteByImage(GameObject _huojiaobj, string _name)
  {
      Texture2D Tex = Resources.Load("新货架/水果货架/" + _name) as Texture2D;
      SpriteRenderer spr = _huojiaobj.GetComponent<SpriteRenderer>();
@@ -659,6 +662,7 @@ void OpenBuyPanelButton(Transform _buypanel, bool OpenOrClose)
  GameObject _FloorObj;
  void WelcomeButton()
  {
+        _WelcomeButton.enabled = false;
      _FloorObj = GameObject.Find("地板空节点");
      ////////////////////
     //sex > LongGuFemale  LongGuMale
