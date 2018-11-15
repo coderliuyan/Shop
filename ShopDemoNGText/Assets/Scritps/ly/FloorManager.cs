@@ -35,14 +35,17 @@ public class FloorManager : MonoBehaviour {
                 for(int i = 0; i< obj.childCount; i++)
                 {
                     GameObject go = obj.GetChild(i).gameObject;
+
+                    if(go.transform.childCount> 1)
+                    {
+                        continue;
+                    }
+
                     int index = GetObjName(go);
                     floorInterable.Add(index,go);
                 }
             }
         }
-
-        floorInterable.Remove(bornIndex);
-        floorInterable.Remove(overIndex);
     }
 
 
@@ -73,18 +76,29 @@ public class FloorManager : MonoBehaviour {
     // Update is called once per frame
     void Update () {
         if (Input.GetKeyDown(KeyCode.A)) {
-            List<int> a = new List<int>();
-            a.Add(bornIndex);
-            if (Test(a)) {
-                Debug.Log("到达目的地了");
-            }
+            //List<int> a = new List<int>();
+            //a.Add(bornIndex);
+            //if (Test(a)) {
+            //    Debug.Log("到达目的地了");
+            //}
+            FetchActiveWay();
+         
         }
 
         if(Input.GetKeyDown(KeyCode.Q)) {
 
-            BornCustomer();
+           StartCoroutine(MoveAnimation(BornCustomer()));
         }
     }
+
+
+    IEnumerator  MoveAnimation(GameObject obj)
+    {
+
+        yield return new WaitForSeconds(0.3f);
+             
+    }
+
 
     //初始点 16
     int bornIndex = 16;
@@ -92,38 +106,189 @@ public class FloorManager : MonoBehaviour {
     //终点 
     int overIndex = 61;
 
+    //存放所有的路径
+    List<List<int>> allTheWays = new List<List<int>>();
+
     //寻找路径
-    bool FetchActiveWay()
+    void FetchActiveWay()
     {
-        
+        allTheWays.Clear();
+        List<int> born = new List<int>();
+        born.Add(bornIndex);
+        allTheWays.Add(born);
+        if (FindWays(born))
+        {
+            Debug.Log("有正确的路径。" + allTheWays.Count);
+            foreach(List<int>  t in allTheWays)
+            {
+                if (t.Contains(overIndex))
+                {
+                    Debug.Log("打印路径。");
+                    foreach(int hh in t)
+                    {
+                        Debug.Log(hh);
+                    }
 
-        Dictionary<int, GameObject> tempFloor = floorInterable;
+                    Debug.Log("打印路径结束。");
+                  
 
-        if(tempFloor.Count < 0 || !tempFloor.ContainsKey(bornIndex) || !tempFloor.ContainsKey(overIndex))
+                }
+            }
+        }
+        else
+        {
+            Debug.Log("没有找到对应的路径");
+        }
+
+    }
+
+    bool FindWays(List<int> arr)
+    {
+      
+        List<int> array = new List<int>();
+        bool arrived = false;
+        for (int i = 0; i < arr.Count; i++)
+        {
+            int a = arr[i];
+            int left = a - 1;
+            int right = a + 1;
+            int forward = a + 10;
+
+
+            //看看数组里面那个有 ，然后添加后续路径
+            for (int j = allTheWays.Count - 1; j>=0; j--)
+            {
+
+                ///
+                //Debug.Log(allTheWays.Count);
+                //Debug.Log("test start!");
+                //foreach (int fff in allTheWays[j])
+                //{
+                //    Debug.Log(fff);
+                //}
+                //Debug.Log("test over");
+
+                List<int> tempList = new List<int>();
+                tempList = allTheWays[j];
+                if (tempList.Contains(a))
+                {
+
+                    //是否进行了添加
+                    bool isAdd = false;
+
+
+                    //这个数组里面有这个数 是他的分支
+                    if (left == overIndex)
+                    {
+                        array.Add(left);
+                        tempList.Add(overIndex);
+                        arrived = true;
+                        allTheWays.RemoveAt(j);
+                        allTheWays.Add(tempList);
+                        break;
+                    }
+
+                    if (right == overIndex)
+                    {
+                        array.Add(right);
+                        tempList.Add(overIndex);
+                        arrived = true;
+                        allTheWays.RemoveAt(j);
+                        allTheWays.Add(tempList);
+                        break;
+                    }
+
+                    if (forward == overIndex)
+                    {
+                        array.Add(forward);
+                        tempList.Add(overIndex);
+                        arrived = true;
+                        allTheWays.RemoveAt(j);
+                        allTheWays.Add(tempList);
+                        break;
+                    }
+
+                    if (floorInterable.ContainsKey(left))
+                    {
+                        array.Add(left);
+                        List<int> l = new List<int>();
+                       for(int g = 0; g < tempList.Count; g++)
+                        {
+                            l.Add(tempList[g]);
+                        }
+                        l.Add(left);
+                        allTheWays.Add(l);
+                        floorInterable.Remove(left);
+                        isAdd = true;
+                    }
+
+                    if (floorInterable.ContainsKey(right))
+                    {
+                        array.Add(right);
+                        List<int> l = new List<int>();
+                        for (int g = 0; g < tempList.Count; g++)
+                        {
+                            l.Add(tempList[g]);
+                        }
+                        l.Add(right);
+                        allTheWays.Add(l);
+                        floorInterable.Remove(right);
+                        isAdd = true;
+                        Debug.Log("!!!!!!!!!!!!!!!!" + right);
+                    }
+
+                    if (floorInterable.ContainsKey(forward))
+                    {
+                        array.Add(forward);
+                        List<int> l = new List<int>();
+                        for (int g = 0; g < tempList.Count; g++)
+                        {
+                            l.Add(tempList[g]);
+                        }
+                        l.Add(forward);
+                        allTheWays.Add(l);
+                        floorInterable.Remove(forward);
+                        isAdd = true;
+                    }
+
+
+                    if (isAdd)
+                    {
+                        allTheWays.RemoveAt(j);
+                    }
+                   
+                  
+
+                }
+            }
+
+
+        }
+
+        if (array.Count == 1)
+        {
+            Debug.Log("这个地方不能建造货架！" + array[0]);
+        }
+
+
+        if (array.Count == 0)
         {
             return false;
         }
-        tempFloor.Remove(bornIndex);
-        tempFloor.Remove(overIndex);
 
-        int left = bornIndex - 1;
-        int right = bornIndex + 1;
-        int forword = bornIndex + 10;
-
-        if (tempFloor.ContainsKey(left))
+        if (arrived)
         {
-            tempFloor.Remove(left);
-
+            return true;
         }
 
 
-
-
-
-        return false;
+     
+        return FindWays(array);
     }
 
 
+
+    //检测不能建造的地面
     bool Test(List<int> arr)
     {
         List<int> array = new List<int>();
@@ -210,13 +375,14 @@ public class FloorManager : MonoBehaviour {
     /// </summary>
     /// 
    
-    void BornCustomer()
+    GameObject BornCustomer()
     {
 
       
         GameObject _BornPlace = GameObject.Find("CustomerBornPlace");
         GameObject CustomerCubeObj = (GameObject)Instantiate(Resources.Load("Test"), _BornPlace.transform.position, Quaternion.Euler(0, 0, 0));
-      
+
+        return CustomerCubeObj;
 
     }
 
