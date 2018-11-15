@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using ConfigDefine;
 /// <summary>
 /// 保存所有的地板空节点 
 /// 有更新节点的方法
@@ -17,15 +18,56 @@ public class FloorManager : MonoBehaviour {
         }
     }
 
+    //存放所有的地板
+    [HideInInspector] public Dictionary<int, GameObject> allFloor;
+
     //存放空地板的字典，序号和物体对象
-    public Dictionary<int, GameObject> floorInterable;
+    [HideInInspector] public Dictionary<int, GameObject> floorInterable;
+
+
+    //已经有建筑的区域 也是不能建造的地板
+    [HideInInspector] public Dictionary<int, GameObject> buildings;
 
     //所有地方的父物体
     public Transform[] floors;
 
+
+
+    //存放所有的路径
+    [HideInInspector] public List<List<int>> allTheWays;
+
+    //顾客的行走路径
+    [HideInInspector] public  List<int> custormWay ;
+
+    //不能建造的区域的位置
+    [HideInInspector] public  List<int> noBuildArea ;
+
+ 
+
+
+
+    //获取所有的地板
+    public void FetchAllFloor()
+    {
+        allFloor.Clear();
+        foreach (Transform obj in floors)
+        {
+            if (obj.gameObject.activeSelf)
+            {
+                for (int i = 0; i < obj.childCount; i++)
+                {
+                    GameObject go = obj.GetChild(i).gameObject;
+                    int index = GetObjName(go);
+                    floorInterable.Add(index, go);
+                }
+            }
+        }
+    }
+
+
+
     //可交互的所有的地板 
-    //---------------------------还需要刨出去没有解锁的地板--------------------------！！！！！！！！！！！！！
-    public void FetchFloor()
+    public void FetchActiveFloor()
     {
         floorInterable.Clear();
         foreach(Transform obj in floors)
@@ -35,12 +77,10 @@ public class FloorManager : MonoBehaviour {
                 for(int i = 0; i< obj.childCount; i++)
                 {
                     GameObject go = obj.GetChild(i).gameObject;
-
                     if(go.transform.childCount> 1)
                     {
                         continue;
                     }
-
                     int index = GetObjName(go);
                     floorInterable.Add(index,go);
                 }
@@ -49,6 +89,29 @@ public class FloorManager : MonoBehaviour {
     }
 
 
+    //所有有建筑的地板 
+    public void FetchBuildingFloor()
+    {
+        buildings.Clear();
+        foreach (Transform obj in floors)
+        {
+            if (obj.gameObject.activeSelf)
+            {
+                for (int i = 0; i < obj.childCount; i++)
+                {
+                    GameObject go = obj.GetChild(i).gameObject;
+                    if (go.transform.childCount > 1)
+                    {
+                        int index = GetObjName(go);
+                        buildings.Add(index,go);
+                    }
+
+                }
+            }
+        }
+    }
+
+    //获取物体名字中包含的数字
     int GetObjName(GameObject _obj)
     {
         int numInt1 = System.Convert.ToInt32(System.Text.RegularExpressions.Regex.Replace(_obj.transform.name, @"[^0-9]+", ""));
@@ -66,12 +129,22 @@ public class FloorManager : MonoBehaviour {
 
     private void Start()
     {
+        //进行初始化
         InitComponent();
     }
 
+    //初始化方法
     void InitComponent()
     {
+        allFloor = new Dictionary<int, GameObject>();
         floorInterable = new Dictionary<int, GameObject>();
+        allTheWays = new List<List<int>>();
+        custormWay = new List<int>();
+        noBuildArea = new List<int>();
+
+        //赋值
+        FetchAllFloor();
+        FetchActiveFloor();
     }
     // Update is called once per frame
     void Update () {
@@ -82,56 +155,30 @@ public class FloorManager : MonoBehaviour {
             //    Debug.Log("到达目的地了");
             //}
             FetchActiveWay();
-         
-        }
-
-        if(Input.GetKeyDown(KeyCode.Q)) {
-
-           StartCoroutine(MoveAnimation(BornCustomer()));
+            
         }
     }
-
-
-    IEnumerator  MoveAnimation(GameObject obj)
-    {
-
-        yield return new WaitForSeconds(0.3f);
-             
-    }
-
-
-    //初始点 16
-    int bornIndex = 16;
-
-    //终点 
-    int overIndex = 61;
-
-    //存放所有的路径
-    List<List<int>> allTheWays = new List<List<int>>();
 
     //寻找路径
-    void FetchActiveWay()
+    public void FetchActiveWay()
     {
         allTheWays.Clear();
         List<int> born = new List<int>();
-        born.Add(bornIndex);
+        born.Add(Define.BORN_POS);
         allTheWays.Add(born);
         if (FindWays(born))
         {
             Debug.Log("有正确的路径。" + allTheWays.Count);
             foreach(List<int>  t in allTheWays)
             {
-                if (t.Contains(overIndex))
+                if (t.Contains(Define.OUT_DOOR_POS))
                 {
-                    Debug.Log("打印路径。");
-                    foreach(int hh in t)
-                    {
-                        Debug.Log(hh);
-                    }
-
-                    Debug.Log("打印路径结束。");
-                  
-
+                    custormWay = t;
+                    return;
+                }
+                else
+                {
+                    Debug.LogError("路径生成有问题。");
                 }
             }
         }
@@ -142,7 +189,7 @@ public class FloorManager : MonoBehaviour {
 
     }
 
-    bool FindWays(List<int> arr)
+    private bool FindWays(List<int> arr)
     {
       
         List<int> array = new List<int>();
@@ -178,30 +225,30 @@ public class FloorManager : MonoBehaviour {
 
 
                     //这个数组里面有这个数 是他的分支
-                    if (left == overIndex)
+                    if (left == Define.OUT_DOOR_POS)
                     {
                         array.Add(left);
-                        tempList.Add(overIndex);
+                        tempList.Add(Define.OUT_DOOR_POS);
                         arrived = true;
                         allTheWays.RemoveAt(j);
                         allTheWays.Add(tempList);
                         break;
                     }
 
-                    if (right == overIndex)
+                    if (right == Define.OUT_DOOR_POS)
                     {
                         array.Add(right);
-                        tempList.Add(overIndex);
+                        tempList.Add(Define.OUT_DOOR_POS);
                         arrived = true;
                         allTheWays.RemoveAt(j);
                         allTheWays.Add(tempList);
                         break;
                     }
 
-                    if (forward == overIndex)
+                    if (forward == Define.OUT_DOOR_POS)
                     {
                         array.Add(forward);
-                        tempList.Add(overIndex);
+                        tempList.Add(Define.OUT_DOOR_POS);
                         arrived = true;
                         allTheWays.RemoveAt(j);
                         allTheWays.Add(tempList);
@@ -234,7 +281,6 @@ public class FloorManager : MonoBehaviour {
                         allTheWays.Add(l);
                         floorInterable.Remove(right);
                         isAdd = true;
-                        Debug.Log("!!!!!!!!!!!!!!!!" + right);
                     }
 
                     if (floorInterable.ContainsKey(forward))
@@ -287,9 +333,18 @@ public class FloorManager : MonoBehaviour {
     }
 
 
+    public bool CheckBuild()
+    {
+        List<int> bornList = new List<int>();
+        bornList.Add(Define.BORN_POS);
+
+        noBuildArea.Clear();
+        return CheckBuildFloor(bornList);
+    }
+
 
     //检测不能建造的地面
-    bool Test(List<int> arr)
+    private bool CheckBuildFloor(List<int> arr)
     {
         List<int> array = new List<int>();
         bool arrived = false;
@@ -300,19 +355,19 @@ public class FloorManager : MonoBehaviour {
             int right = a + 1;
             int forward = a + 10;
 
-            if(left == overIndex)
+            if(left == Define.OUT_DOOR_POS)
             {
                 array.Add(left);
                 arrived = true;
             }
 
-            if (right == overIndex)
+            if (right == Define.OUT_DOOR_POS)
             {
                 array.Add(right);
                 arrived = true;
             }
 
-            if (forward == overIndex)
+            if (forward == Define.OUT_DOOR_POS)
             {
                 array.Add(forward);
                 arrived = true;
@@ -343,6 +398,8 @@ public class FloorManager : MonoBehaviour {
         if (array.Count == 1)
         {
             Debug.Log("这个地方不能建造货架！" + array[0]);
+
+            noBuildArea.Add(array[0]);
         }
 
 
@@ -365,7 +422,7 @@ public class FloorManager : MonoBehaviour {
         }
 
         Debug.Log("--------------------------");
-        return Test(array);
+        return CheckBuildFloor(array);
     }
 
     ///下面都是要删掉的 测试用

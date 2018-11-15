@@ -33,7 +33,7 @@ public class SelectPanel : MonoBehaviour {
     {
         if (Input.GetKeyDown(KeyCode.W))
         {
-            FloorManager.Instance.FetchFloor();
+            FloorManager.Instance.FetchActiveFloor();
             Debug.Log(FloorManager.Instance.floorInterable.Count);
         }
     }
