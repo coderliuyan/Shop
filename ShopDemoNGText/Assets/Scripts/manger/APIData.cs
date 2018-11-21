@@ -7,19 +7,19 @@ public class APIData
     /// <summary>
     /// 本地存储数据的玩家等级名称。
     /// </summary>
-    public static string PalyerLevelName = "PalyerLevel";
+    public static string PlayerLevelName = "PlayerLevelName";
     /// <summary>
     /// 本地存储数据的玩家等级。
     /// </summary>
-    public static int PalyerLevelNum;
+    public static int PlayerLevel;
     /// <summary>
     /// 本地存储数据的玩家等级当前的经验值。
     /// </summary>
-    public static string PalyerLevelExpName = "PalyerLevelExpName";
+    public static string PlayerLevelExpName = "PlayerLevelExpName";
     /// <summary>
     /// 本地存储数据的玩家等级当前的经验值。
     /// </summary>
-    public static int PalyerLevelExp;
+    public static int PlayerLevelExp;
     /// <summary>
     /// 本地存储数据的店铺口碑等级名称。
     /// </summary>
@@ -27,7 +27,7 @@ public class APIData
     /// <summary>
     /// 本地存储数据的店铺口碑等级
     /// </summary>
-    public static int ShopLevelNum;
+    public static int ShopLevel;
     /// <summary>
     /// 本地存储数据的玩家等级当前的经验值。
     /// </summary>

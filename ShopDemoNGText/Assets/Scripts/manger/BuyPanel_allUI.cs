@@ -114,7 +114,7 @@ public class BuyPanel_allUI : MonoBehaviour
                 obj.name = fruitsNum.ToString();
                 fruitsNum += 1;
                 obj.GetComponent<UIDragScrollView>().scrollView = _huowuType.transform.parent.GetComponent<UIScrollView>();             
-                if(goodsLevel<=APIData.PalyerLevelNum)
+                if(goodsLevel<=APIData.PlayerLevel)
                 {
                  obj.transform.Find("Button").GetComponent<UIButton>().onClick.Add(new EventDelegate(() => { BuyGoodsButton(goodsId); })); 
                 }

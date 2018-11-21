@@ -192,9 +192,9 @@ public class SelectPanelUI : MonoBehaviour {
    {
        _AllMoneyInt=APIData.GoldNum;
        _AllMoneyLable.text =_AllMoneyInt.ToString();
-       _PlayerLevelInt = APIData.PalyerLevelNum;
+       _PlayerLevelInt = APIData.PlayerLevel;
        _PlayerLevel.text = _PlayerLevelInt.ToString();
-       _ShopLevelInt = APIData.ShopLevelNum;
+       _ShopLevelInt = APIData.ShopLevel;
        _ShopLevel.text = _ShopLevelInt.ToString();  
    }
     /// <summary>
@@ -207,7 +207,7 @@ public void AddShopExpNum(int _addExp)
      //读表获取经验值
      //跟当前经验对比是否需要升级口碑等级。
      //口碑等级升级。根据口碑等级表，获取应解锁顾客的id,再根据顾客表，获取到顾客需求类型，再根据顾客需求类型（就是货架类型），在根据货架表获取货架类型的id。 
-     _shopid = 2000 + APIData.ShopLevelNum;
+     _shopid = 2000 + APIData.ShopLevel;
    // _ShopExpInt += _addExp;
      APIData.ShopLevelExp += _addExp;
      _ShopExpInt = APIData.ShopLevelExp;
@@ -225,11 +225,11 @@ public void AddShopExpNum(int _addExp)
          GameDataManger.Instance._huojiaUIId.Add(HuojiaId);
          //Debug.Log("CustomerId++++++"+CustomerId);
          //Debug.Log(_CustomerXml.GetInt(CustomerId, "shelfId") + "*huojiaid+++++" + HuojiaId);
-         APIData.ShopLevelNum = _ShopXml.GetInt(_shopid, "Level");
-         _ShopLevelInt = APIData.ShopLevelNum;
+         APIData.ShopLevel = _ShopXml.GetInt(_shopid, "Level");
+         _ShopLevelInt = APIData.ShopLevel;
          _ShopLevel.text = _ShopLevelInt.ToString();
          GetHuojiaUI();
-     SaveMoney(APIData.ShopLevelName,APIData.ShopLevelNum);
+     SaveMoney(APIData.ShopLevelName,APIData.ShopLevel);
      }
     // GetHuojiaUI();
      SaveMoney(APIData.ShopLevelExpName,APIData.ShopLevelExp);
@@ -256,23 +256,23 @@ void JieSuoCustomer(int CustomerId)
     /// <param name="_addExp"></param>
 public void AddPlayerExpNum(int _addExp)
  {
-       _playerid = 1000 + APIData.PalyerLevelNum;
-       APIData.PalyerLevelExp += _addExp;
+       _playerid = 1000 + APIData.PlayerLevel;
+       APIData.PlayerLevelExp += _addExp;
       //_PlayerExpInt += _addExp;
-       _PlayerExpInt = APIData.PalyerLevelExp;
+       _PlayerExpInt = APIData.PlayerLevelExp;
        _PlayerExp.text = _PlayerExpInt.ToString();
        if (_PlayerExpInt >= _PlayerXml.GetInt(_playerid, "Exp"))
        {
-           APIData.PalyerLevelNum += 1;
-           _PlayerLevelInt = APIData.PalyerLevelNum;
+           APIData.PlayerLevel += 1;
+           _PlayerLevelInt = APIData.PlayerLevel;
            _PlayerLevel.text = _PlayerLevelInt.ToString();
            //解锁地面。
            JiesuoDimian();
-          SaveMoney(APIData.PalyerLevelName,APIData.PalyerLevelNum);      
+          SaveMoney(APIData.PlayerLevelName,APIData.PlayerLevel);      
        }
      //读表获取经验值
      //更当前经验对比是否需要升级口碑等级。
-       SaveMoney(APIData.PalyerLevelExpName,APIData.PalyerLevelExp);
+       SaveMoney(APIData.PlayerLevelExpName,APIData.PlayerLevelExp);
  }
 //解锁地面。
 Transform _Level2Floor;
@@ -288,7 +288,7 @@ Transform _level1zhuziL;
 Transform _level1zhuziR;
 void JiesuoDimian()
 {
-    Debug.Log("APIData.PalyerLevelNum:" + APIData.PalyerLevelNum);
+    Debug.Log("APIData.PalyerLevelNum:" + APIData.PlayerLevel);
     //Chu
     _Level2Floor = GameObject.Find("地板空节点").transform.Find("FirstLevel");
     _Level3Floor =GameObject.Find("地板空节点").transform.Find("SencondLevel");
@@ -304,11 +304,11 @@ void JiesuoDimian()
     _level3qiangL = GameObject.Find("墙空节点").transform.Find("墙_4级");
     SetCameraSize();
     Debug.Log("jiesuodimain,,,,,,,,,,,,,");
-    if (APIData.PalyerLevelNum == 1)
+    if (APIData.PlayerLevel == 1)
     {
         GetAllNullFloor("Chu");
     }
-    if (APIData.PalyerLevelNum == 2)
+    if (APIData.PlayerLevel == 2)
     {
         _Level2Floor.gameObject.SetActive(true);
         _Level3Floor.gameObject.SetActive(true);
@@ -317,7 +317,7 @@ void JiesuoDimian()
         GetAllNullFloor("Chu");
         GetAllNullFloor("FirstLevel");
     }
-    if (APIData.PalyerLevelNum == 3)
+    if (APIData.PlayerLevel == 3)
     {
         _Level3Floor.gameObject.SetActive(true);
         _Level4Floor.gameObject.SetActive(true);
@@ -330,7 +330,7 @@ void JiesuoDimian()
         _level3qiangR.gameObject.SetActive(true);
         _level3zhuziR.gameObject.SetActive(true);
     }
-    if (APIData.PalyerLevelNum == 4)
+    if (APIData.PlayerLevel == 4)
     {
 
         _Level4Floor.gameObject.SetActive(true);
@@ -342,7 +342,7 @@ void JiesuoDimian()
         GetAllNullFloor("SencondLevel");
         GetAllNullFloor("ThirdLevel");
     }
-    if (APIData.PalyerLevelNum == 5)
+    if (APIData.PlayerLevel == 5)
     {
         _Level5Floor.gameObject.SetActive(true);
         _Level6Floor.gameObject.SetActive(true);
@@ -359,7 +359,7 @@ void JiesuoDimian()
         _level3qiangL.gameObject.SetActive(true);
         _level3zhuziL.gameObject.SetActive(true);
     }
-    if (APIData.PalyerLevelNum == 6)
+    if (APIData.PlayerLevel == 6)
     {
 
         _Level6Floor.gameObject.SetActive(true);
@@ -372,7 +372,7 @@ void JiesuoDimian()
         GetAllNullFloor("ForthLevel");
         GetAllNullFloor("FiveLevel");
     }
-    if (APIData.PalyerLevelNum == 7)
+    if (APIData.PlayerLevel == 7)
     {
         _Level6Floor.gameObject.SetActive(true);
         GetAllFloor("FiveLevel");
@@ -425,12 +425,12 @@ int GetObjName(GameObject _obj)
 }
 void SetCameraSize()
 {
-    if (APIData.PalyerLevelNum <= 2)
+    if (APIData.PlayerLevel <= 2)
     {
         Camera.main.GetComponent<Camera>().orthographicSize = 8;
         Camera.main.transform.localPosition = new Vector3(0,1,3);
     }
-    if (APIData.PalyerLevelNum > 2)
+    if (APIData.PlayerLevel > 2)
     {
         Camera.main.GetComponent<Camera>().orthographicSize = 12;
         Camera.main.transform.localPosition = new Vector3(0, 1, 0);

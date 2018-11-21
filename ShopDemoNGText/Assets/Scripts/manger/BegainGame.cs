@@ -15,8 +15,8 @@ public class BegainGame : MonoBehaviour {
         if (APIData.HaveLocalData(APIData.GoldName))
         {
             APIData.DeleteLocalDate(APIData.GoldName);
-            APIData.DeleteLocalDate(APIData.PalyerLevelName);
-            APIData.DeleteLocalDate(APIData.PalyerLevelExpName);
+            APIData.DeleteLocalDate(APIData.PlayerLevelName);
+            APIData.DeleteLocalDate(APIData.PlayerLevelExpName);
             APIData.DeleteLocalDate(APIData.ShopLevelExpName);
             APIData.DeleteLocalDate(APIData.ShopLevelName);
         }
@@ -36,18 +36,18 @@ public class BegainGame : MonoBehaviour {
             //获取本地存储的金币。
             APIData.GoldNum = APIData.GetLocalDate(APIData.GoldName);
             //获取玩家等级
-            APIData.PalyerLevelNum = APIData.GetLocalDate(APIData.PalyerLevelName);
+            APIData.PlayerLevel = APIData.GetLocalDate(APIData.PlayerLevelName);
             //获取玩家经验值
-            APIData.PalyerLevelExp = APIData.GetLocalDate(APIData.PalyerLevelExpName);
+            APIData.PlayerLevelExp = APIData.GetLocalDate(APIData.PlayerLevelExpName);
             //获取店铺等级
-            APIData.ShopLevelNum = APIData.GetLocalDate(APIData.PalyerLevelName);
+            APIData.ShopLevel = APIData.GetLocalDate(APIData.PlayerLevelName);
             //获取店铺经验值
             APIData.ShopLevelExp = APIData.GetLocalDate(APIData.ShopLevelExpName);
         }else{
             APIData.GoldNum = 5000;
-            APIData.PalyerLevelNum = 1;
-            APIData.PalyerLevelExp = 0;
-            APIData.ShopLevelNum = 1;
+            APIData.PlayerLevel = 1;
+            APIData.PlayerLevelExp = 0;
+            APIData.ShopLevel = 1;
             APIData.ShopLevelExp = 0;
         }
 

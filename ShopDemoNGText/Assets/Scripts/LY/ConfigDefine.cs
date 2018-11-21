@@ -13,6 +13,10 @@
 
         //产出小人的基础时间间隔
         public const float CUSTOMER_TIME = 1.5f;
+
+
+
+
     }
 
 }
