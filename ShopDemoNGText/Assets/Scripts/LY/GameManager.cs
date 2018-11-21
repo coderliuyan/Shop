@@ -8,13 +8,46 @@ public class GameManager : MonoBehaviour {
 
     private string huojiaPath = @"UIHuoJia/Goods/fruit_huojia";
     private string fruitPath = @"UIHuoJia/Goods/fruit";
+
+
+
+
+    TableValue _PlayerXml;
+    TableValue _ShopXml;
+    TableValue _HuojiaXml;
+    TableValue _CustomerXml;
+    TableValue GoodsData;
+    TableValue shopType;
     // Use this for initialization
     void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
+        _PlayerXml = ReadExpXml("DataType_playerLevel");
+        _ShopXml = ReadExpXml("DataType_shopLevel");
+        _HuojiaXml = ReadExpXml("DataType_rackLevel");
+        _CustomerXml = ReadExpXml("DataType_cusLevel");
+        GoodsData = ReadExpXml("DataType_Goods");
+        shopType = ReadExpXml("ShopType");
+    }
+
+    TableValue ReadExpXml(string _DataName)
+    {
+        Object ShopExpObj = Resources.Load("Xml/" + _DataName);
+        XmlHelper.Instance.LoadFile(_DataName, ShopExpObj);
+        TableValue ShopExpData = XmlHelper.Instance.ReadFile(_DataName);
+        return ShopExpData;
+    }
+
+    // Update is called once per frame
+    void Update () {
+        //test
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            int shopid = 2001;
+           int str =   _ShopXml.GetInt(shopid,"Exp");
+            Debug.Log(str);
+        }
+
+        //test over
+
         if (Input.GetMouseButtonDown(0))
         {
             Ray ray = (Camera.main.ScreenPointToRay(Input.mousePosition));
