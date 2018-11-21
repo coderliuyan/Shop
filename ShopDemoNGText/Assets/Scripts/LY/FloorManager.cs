@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using ConfigDefine;
+using System.Linq;
 /// <summary>
 /// 保存所有的地板空节点 
 /// 有更新节点的方法
@@ -134,7 +135,7 @@ public class FloorManager : MonoBehaviour {
     }
 
     //初始化方法
-    void InitComponent()
+    public void InitComponent()
     {
         allFloor = new Dictionary<int, GameObject>();
         floorInterable = new Dictionary<int, GameObject>();
@@ -160,16 +161,57 @@ public class FloorManager : MonoBehaviour {
     }
 
     //寻找路径
-    public void FetchActiveWay()
+    public bool FetchActiveWay()
     {
         allTheWays.Clear();
         List<int> born = new List<int>();
         born.Add(Define.BORN_POS);
         allTheWays.Add(born);
+        FetchActiveFloor();
+        noBuildArea.Clear();
+        custormWay.Clear();
+
         if (FindWays(born))
         {
             Debug.Log("有正确的路径。" + allTheWays.Count);
-            foreach(List<int>  t in allTheWays)
+
+            ////List<List<int>> tempL = new List<List<int>>();
+            //foreach (List<int> t in allTheWays)
+            //{
+            //    if (t.Contains(Define.OUT_DOOR_POS))
+            //    {
+
+            //        //tempL.Add(t);
+            //        Debug.Log("+++++++++++++++++++");
+            //        foreach(int a in t)
+            //        {
+            //            Debug.Log(a);
+            //        }
+
+            //    }
+            //}
+
+
+
+
+            //List<int> temp = tempL[0];
+
+            //foreach(List<int> t in tempL)
+            //{
+            //    temp = t.Intersect(temp).ToList<int>();
+            //}
+
+            //if(temp.Count > 0)
+            //{
+            //    Debug.Log("这里还有不能建造的点");
+            //    foreach(int noBuild in temp)
+            //    {
+            //        if(!noBuildArea.Contains(noBuild))
+            //             noBuildArea.Add(noBuild);
+            //    }
+            //}
+
+            foreach (List<int>  t in allTheWays)
             {
                 if (t.Contains(Define.OUT_DOOR_POS))
                 {
@@ -179,13 +221,15 @@ public class FloorManager : MonoBehaviour {
                         custormWay.Add(num);
                     }
 
-                    return;
+                    return true;
                 }
             }
+            return true;
         }
         else
         {
             Debug.Log("没有找到对应的路径");
+            return false;
         }
 
     }
@@ -201,6 +245,7 @@ public class FloorManager : MonoBehaviour {
             int left = a - 1;
             int right = a + 1;
             int forward = a + 10;
+            int back = a - 10; 
 
 
             //看看数组里面那个有 ，然后添加后续路径
@@ -256,6 +301,16 @@ public class FloorManager : MonoBehaviour {
                         break;
                     }
 
+                    if (back == Define.OUT_DOOR_POS)
+                    {
+                        array.Add(back);
+                        tempList.Add(Define.OUT_DOOR_POS);
+                        arrived = true;
+                        allTheWays.RemoveAt(j);
+                        allTheWays.Add(tempList);
+                        break;
+                    }
+
                     if (floorInterable.ContainsKey(left))
                     {
                         array.Add(left);
@@ -298,6 +353,19 @@ public class FloorManager : MonoBehaviour {
                         isAdd = true;
                     }
 
+                    if (floorInterable.ContainsKey(back))
+                    {
+                        array.Add(back);
+                        List<int> l = new List<int>();
+                        for (int g = 0; g < tempList.Count; g++)
+                        {
+                            l.Add(tempList[g]);
+                        }
+                        l.Add(back);
+                        allTheWays.Add(l);
+                        floorInterable.Remove(back);
+                        isAdd = true;
+                    }
 
                     if (isAdd)
                     {
@@ -314,7 +382,8 @@ public class FloorManager : MonoBehaviour {
 
         if (array.Count == 1)
         {
-            Debug.Log("这个地方不能建造货架！" + array[0]);
+            // Debug.Log("这个地方不能建造货架！" + array[0]);
+            noBuildArea.Add(array[0]);
         }
 
 
@@ -340,6 +409,8 @@ public class FloorManager : MonoBehaviour {
         bornList.Add(Define.BORN_POS);
 
         noBuildArea.Clear();
+        FetchActiveFloor();
+        Debug.Log(floorInterable.Count);
         return CheckBuildFloor(bornList);
     }
 
@@ -355,6 +426,7 @@ public class FloorManager : MonoBehaviour {
             int left = a - 1;
             int right = a + 1;
             int forward = a + 10;
+            int back = a - 10;
 
             if(left == Define.OUT_DOOR_POS)
             {
@@ -371,6 +443,12 @@ public class FloorManager : MonoBehaviour {
             if (forward == Define.OUT_DOOR_POS)
             {
                 array.Add(forward);
+                arrived = true;
+            }
+
+            if (back == Define.OUT_DOOR_POS)
+            {
+                array.Add(back);
                 arrived = true;
             }
 
@@ -391,16 +469,32 @@ public class FloorManager : MonoBehaviour {
                 floorInterable.Remove(forward);
             }
 
-           
+            if (floorInterable.ContainsKey(back))
+            {
+                array.Add(back);
+                floorInterable.Remove(back);
+            }
 
 
+
+        }
+        if(array.Count > 1)
+        {
+            array.Union(array).ToList<int>();
         }
 
         if (array.Count == 1)
         {
             Debug.Log("这个地方不能建造货架！" + array[0]);
-
-            noBuildArea.Add(array[0]);
+            if ( !noBuildArea.Contains(array[0]))
+            {
+                noBuildArea.Add(array[0]);
+            }
+          
+            //if (allFloor.ContainsKey(array[0]))
+            //{
+            //    allFloor[array[0]].GetComponent<SpriteRenderer>().color = Color.red;
+            //}
         }
 
 
@@ -415,14 +509,14 @@ public class FloorManager : MonoBehaviour {
         }
 
 
-        Debug.Log("--------------------------");
-        foreach (int a in array) {
+        //Debug.Log("--------------------------");
+        //foreach (int a in array) {
             
-            Debug.Log("===================" + a);
+        //    Debug.Log("===================" + a);
           
-        }
+        //}
 
-        Debug.Log("--------------------------");
+        //Debug.Log("--------------------------");
         return CheckBuildFloor(array);
     }
 

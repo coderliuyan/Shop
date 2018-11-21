@@ -9,6 +9,11 @@ public class SelectPanel : MonoBehaviour {
     private readonly string wellcomeBtnPath = @"ShangCheng/GameBeginCstomer/WelcomButton";
     private UIButton wellcomeBtn;
 
+    private string huojiaBtnPath = @"ShangCheng/ZhuangxiuButton/Tubiao/HuojiaGameObject/HuojiaButton";
+    private UIButton huojiaBtn;
+
+  
+
 
     public static SelectPanel selectManager;
 
@@ -27,7 +32,11 @@ public class SelectPanel : MonoBehaviour {
     void Start ()
     {
         InitComponet();
-	}
+
+
+       
+
+    }
 
 
     // Update is called once per frame
@@ -45,8 +54,49 @@ public class SelectPanel : MonoBehaviour {
         wellcomeBtn = transform.Find(wellcomeBtnPath).GetComponent<UIButton>();
         wellcomeBtn.onClick.Add(new EventDelegate(WellComeBtnClick));
 
+        huojiaBtn = transform.Find(huojiaBtnPath).GetComponent<UIButton>();
+        huojiaBtn.onClick.Add(new EventDelegate(AddHuoJia));
+
     }
 	
+    private void AddHuoJia()
+    {
+       
+
+        Debug.Log("d点击了货架。");
+      
+        
+        //首先 检查一下不能交互的区域
+        if (FloorManager.Instance.FetchActiveWay())
+        {
+
+            //首先创建一个货架
+            GameObject huojiaObj = Instantiate(Resources.Load("HJPrefab/HJFruit1") as GameObject);
+            Debug.Log("检查了路径，并有有效路径。");
+
+            FloorManager.Instance.FetchActiveFloor();
+            Debug.Log(" floor interface count =" + FloorManager.Instance.floorInterable.Count);
+            //    foreach (GameObject obj in FloorManager.Instance.floorInterable.Values)
+            //    {
+            //        obj.GetComponent<SpriteRenderer>().color = Color.green;
+            //    }
+
+            //    foreach (int index in FloorManager.Instance.noBuildArea)
+            //    {
+            //        Debug.Log("-----------------------------");
+            //        Debug.Log(index);
+            //        if (FloorManager.Instance.allFloor.ContainsKey(index))
+            //        {
+            //            FloorManager.Instance.allFloor[index].GetComponent<SpriteRenderer>().color = Color.white;
+            //        }
+            //    }
+
+        }
+
+    }
+    
+
+
     void WellComeBtnClick()
     {
         boss.State = Boss.GameState.Shoping;
@@ -118,7 +168,7 @@ public class SelectPanel : MonoBehaviour {
             GameObject nextObj = FloorManager.Instance.allFloor[FloorManager.Instance.custormWay[i]];
             Vector3 nextPos = nextObj.transform.position;
 
-            Debug.Log((newCustomer.transform.position - nextPos).normalized);
+            //Debug.Log((newCustomer.transform.position - nextPos).normalized);
             Vector3 jugeVector = (newCustomer.transform.position - nextPos).normalized;
             if(jugeVector.z > 0)
             {
@@ -139,7 +189,7 @@ public class SelectPanel : MonoBehaviour {
 
             yield return new WaitForSeconds(0.3f);
           
-            Debug.Log(FloorManager.Instance.custormWay[i]);
+           // Debug.Log(FloorManager.Instance.custormWay[i]);
             // int index = FloorManager.Instance.custormWay[i];
             //  Vector3 nextPos = FloorManager.Instance.allFloor[index].transform.position;
 
