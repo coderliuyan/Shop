@@ -130,7 +130,7 @@ public class SelectPanelUI : MonoBehaviour {
         _ShopExpInt = int.Parse(_ShopExp.text);
         _BuyGoodsButton = transform.Find("ShangCheng/jinhuoButton").GetComponent<UIButton>();
         _CangchuButton = transform.Find("ShangCheng/CangkuButton").GetComponent<UIButton>();
-        _ZhuangxiuButton = transform.Find("ShangCheng/zhaungxiuButton").GetComponent<UIButton>();
+        _ZhuangxiuButton = transform.Find("ShangCheng/ZhuangxiuButton").GetComponent<UIButton>();
         _ZhuangxiuUI = transform.Find("ShangCheng/zhaungxiuButton/Tubiao");
         _CangchuUI = _CangchuButton.transform.Find("Diban/cangkuUI");
         _BuyHuojiUIFirst = transform.parent.Find("BuyHuojia").transform.Find("YujiMianBan");

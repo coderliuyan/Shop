@@ -113,7 +113,7 @@ public class FloorManager : MonoBehaviour {
     }
 
     //获取物体名字中包含的数字
-    int GetObjName(GameObject _obj)
+    public int GetObjName(GameObject _obj)
     {
         int numInt1 = System.Convert.ToInt32(System.Text.RegularExpressions.Regex.Replace(_obj.transform.name, @"[^0-9]+", ""));
         return numInt1;
@@ -174,42 +174,6 @@ public class FloorManager : MonoBehaviour {
         if (FindWays(born))
         {
             Debug.Log("有正确的路径。" + allTheWays.Count);
-
-            ////List<List<int>> tempL = new List<List<int>>();
-            //foreach (List<int> t in allTheWays)
-            //{
-            //    if (t.Contains(Define.OUT_DOOR_POS))
-            //    {
-
-            //        //tempL.Add(t);
-            //        Debug.Log("+++++++++++++++++++");
-            //        foreach(int a in t)
-            //        {
-            //            Debug.Log(a);
-            //        }
-
-            //    }
-            //}
-
-
-
-
-            //List<int> temp = tempL[0];
-
-            //foreach(List<int> t in tempL)
-            //{
-            //    temp = t.Intersect(temp).ToList<int>();
-            //}
-
-            //if(temp.Count > 0)
-            //{
-            //    Debug.Log("这里还有不能建造的点");
-            //    foreach(int noBuild in temp)
-            //    {
-            //        if(!noBuildArea.Contains(noBuild))
-            //             noBuildArea.Add(noBuild);
-            //    }
-            //}
 
             foreach (List<int>  t in allTheWays)
             {

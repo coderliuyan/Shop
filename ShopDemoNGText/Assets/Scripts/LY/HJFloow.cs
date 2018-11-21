@@ -15,8 +15,29 @@ public class HJFloow : MonoBehaviour {
 	void Update () {
         if (isMove)
         {
-            Ray ray = (Camera.main.ScreenPointToRay(Input.mousePosition));
-           
+#if UNITY_EDITOR
+              Ray ray = (Camera.main.ScreenPointToRay(Input.mousePosition));
+#endif
+
+
+#if !UNITY_EDITOR 
+              Vector2 pos = Vector2.zero;
+            if (Input.touchCount <= 0)
+                return;
+            if (Input.touchCount == 1) //单点触碰移动摄像机
+            {
+                if (Input.touches[0].phase == TouchPhase.Began)
+                    pos = Input.touches[0].position;   //记录手指刚触碰的位置
+                if (Input.touches[0].phase == TouchPhase.Moved) //手指在屏幕上移动
+                {
+                    pos = Input.touches[0].deltaPosition;
+                    transform.Translate(new Vector3( Input.touches[0].deltaPosition.x * Time.deltaTime, Input.touches[0].deltaPosition.y * Time.deltaTime, 0));
+
+                }
+            }
+            Ray ray = (Camera.main.ScreenPointToRay(pos));
+#endif
+
             if ((Physics.Raycast(ray, out hit)))
             {
                 Debug.DrawLine(ray.origin, hit.point);
@@ -35,13 +56,13 @@ public class HJFloow : MonoBehaviour {
                     if (hit.transform.tag == "Floor" && hit.transform.parent.parent.childCount <= 2)
                     {
 
-
-
                         Debug.Log(hit.transform.parent.parent.gameObject.name);
                         int index = GetObjName(hit.transform.parent.parent.gameObject);
                         if (FloorManager.Instance.floorInterable.ContainsKey(index))
                         {
                             isMove = false;
+                            this.gameObject.AddComponent<SphereCollider>().radius = 0.5f;
+                            this.gameObject.tag = "huojia";
                         }
 
 
@@ -52,16 +73,18 @@ public class HJFloow : MonoBehaviour {
                             return;
                         }
 
-                        //foreach (GameObject obj in FloorManager.Instance.floorInterable.Values)
-                        //{
-                        //    obj.GetComponent<SpriteRenderer>().color = Color.white;
-                        //}
-
                     }
                     else
                     {
                         Debug.Log("不能拜访货架， 销毁货架。");
                         Destroy(gameObject);
+                    }
+
+
+                    Debug.Log("点击的物体是" + hit.transform.name + "tag ==" + hit.transform.tag);
+                    if(hit.transform.tag == "huojia")
+                    {
+                        Debug.Log("场景中的货架被点击了。");
                     }
 
 

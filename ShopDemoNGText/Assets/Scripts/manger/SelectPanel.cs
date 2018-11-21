@@ -76,31 +76,38 @@ public class SelectPanel : MonoBehaviour {
 
             FloorManager.Instance.FetchActiveFloor();
             Debug.Log(" floor interface count =" + FloorManager.Instance.floorInterable.Count);
-            //    foreach (GameObject obj in FloorManager.Instance.floorInterable.Values)
-            //    {
-            //        obj.GetComponent<SpriteRenderer>().color = Color.green;
-            //    }
-
-            //    foreach (int index in FloorManager.Instance.noBuildArea)
-            //    {
-            //        Debug.Log("-----------------------------");
-            //        Debug.Log(index);
-            //        if (FloorManager.Instance.allFloor.ContainsKey(index))
-            //        {
-            //            FloorManager.Instance.allFloor[index].GetComponent<SpriteRenderer>().color = Color.white;
-            //        }
-            //    }
 
         }
 
     }
+
+    /// <summary>
+    /// 开始迎客时调用 
+    /// </summary>
+    /// <param name="shopstate">迎客时为close 结束时为 true</param>
     
+    private void CloseShop(bool shopstate)
+    {
+        if (shopstate)
+        {
+            boss.State = Boss.GameState.preparShop;
+        }
+        else
+        {
+            boss.State = Boss.GameState.Shoping;
+        }
+        
+        wellcomeBtn.enabled = shopstate;
+        huojiaBtn.enabled = shopstate;
+
+    }
+
 
 
     void WellComeBtnClick()
     {
-        boss.State = Boss.GameState.Shoping;
-        wellcomeBtn.enabled = false;
+
+        CloseShop(false);
 
         //获取可交互的地板
         FloorManager.Instance.FetchActiveFloor();
@@ -188,10 +195,13 @@ public class SelectPanel : MonoBehaviour {
             });
 
             yield return new WaitForSeconds(0.3f);
-          
-           // Debug.Log(FloorManager.Instance.custormWay[i]);
+
+            // Debug.Log(FloorManager.Instance.custormWay[i]);
             // int index = FloorManager.Instance.custormWay[i];
-            //  Vector3 nextPos = FloorManager.Instance.allFloor[index].transform.position;
+            // Vector3 nextPos = FloorManager.Instance.allFloor[index].transform.position;
+
+            //走到下一块地板上时，看下左右前 是否有对应的货架 如果有 激发交互行为。
+            int index = FloorManager.Instance.GetObjName(newCustomer.transform.parent.gameObject);
 
 
 
@@ -210,8 +220,7 @@ public class SelectPanel : MonoBehaviour {
     {
 
         Debug.Log("买完啦...");
-        boss.State = Boss.GameState.preparShop;
-        wellcomeBtn.enabled = true;
+        CloseShop(true);
     }
 
     public void StateChanged(){
