@@ -34,8 +34,6 @@ public class SelectPanel : MonoBehaviour {
         InitComponet();
 
 
-       
-
     }
 
 
@@ -44,8 +42,8 @@ public class SelectPanel : MonoBehaviour {
     {
         if (Input.GetKeyDown(KeyCode.W))
         {
-            FloorManager.Instance.FetchActiveFloor();
-            Debug.Log(FloorManager.Instance.floorInterable.Count);
+            Dianyuan.animation.Play("face_work",1);
+
         }
     }
 
@@ -56,6 +54,8 @@ public class SelectPanel : MonoBehaviour {
 
         huojiaBtn = transform.Find(huojiaBtnPath).GetComponent<UIButton>();
         huojiaBtn.onClick.Add(new EventDelegate(AddHuoJia));
+
+        BornGetMoneyPeople();
 
     }
 	
@@ -194,11 +194,26 @@ public class SelectPanel : MonoBehaviour {
                 newCustomer.transform.SetParent(nextObj.transform);
             });
 
+
             yield return new WaitForSeconds(0.3f);
 
             // Debug.Log(FloorManager.Instance.custormWay[i]);
             // int index = FloorManager.Instance.custormWay[i];
             // Vector3 nextPos = FloorManager.Instance.allFloor[index].transform.position;
+
+
+
+            //到了结账的位置
+            if (newCustomer.transform.position == outDoorObj.transform.position)
+            {
+                Debug.Log("到了结账的位置");
+                arc.animation.Play("back_buy", -1);
+                //旋转一个角度
+                newCustomer.transform.localRotation = Quaternion.Euler(180f, 180f, 180f);
+                Dianyuan.animation.Play("face_work", 1);
+                yield return new WaitForSeconds(0.5f);
+            }
+
 
             //走到下一块地板上时，看下左右前 是否有对应的货架 如果有 激发交互行为。
             int index = FloorManager.Instance.GetObjName(newCustomer.transform.parent.gameObject);
@@ -237,6 +252,18 @@ public class SelectPanel : MonoBehaviour {
                 }
                 break;
         }
+    }
+    DragonBones.UnityArmatureComponent Dianyuan;
+    void BornGetMoneyPeople()
+    {
+        GameObject _ShouyinyuanPlace = GameObject.Find("GetMoneyPenploPlace");
+        GameObject CustomerCubeObj = (GameObject)Instantiate(Resources.Load("NewCustomer/Dianyuan"), _ShouyinyuanPlace.transform.position, Quaternion.Euler(90, 0, 0));
+        Dianyuan = LongGuManager.GetInstance().CreatLongGu("LongGuFemale");
+        List<DragonBones.Slot> maleSlotAll = new List<DragonBones.Slot>();
+        maleSlotAll = LongGuManager.GetInstance().GetLongGuSlotAll(Dianyuan);
+        LongGuManager.GetInstance().ChangeClothesAll("LongGuFemale", maleSlotAll, 11);
+        Dianyuan.gameObject.AddComponent<LongguFollow>()._CustomerMov = CustomerCubeObj;
+        Dianyuan.transform.GetComponent<DragonBones.UnityArmatureComponent>().sortingGroup.sortingOrder = 6;
     }
 
 
