@@ -141,7 +141,7 @@ bool isLoadData = false;
     {
         Slot newSlot = null;
         newSlot = _whichLongGu.armature.GetSlot(_whichSlot);
-        Debug.Log("newSlot=" + newSlot.name);
+       // Debug.Log("newSlot=" + newSlot.name);
         return newSlot;
     }
     /// <summary>

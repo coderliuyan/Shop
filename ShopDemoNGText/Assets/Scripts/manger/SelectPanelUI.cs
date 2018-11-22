@@ -131,7 +131,7 @@ public class SelectPanelUI : MonoBehaviour {
         _BuyGoodsButton = transform.Find("ShangCheng/jinhuoButton").GetComponent<UIButton>();
         _CangchuButton = transform.Find("ShangCheng/CangkuButton").GetComponent<UIButton>();
         _ZhuangxiuButton = transform.Find("ShangCheng/ZhuangxiuButton").GetComponent<UIButton>();
-        _ZhuangxiuUI = transform.Find("ShangCheng/zhaungxiuButton/Tubiao");
+        _ZhuangxiuUI = transform.Find("ShangCheng/ZhuangxiuButton/Tubiao");
         _CangchuUI = _CangchuButton.transform.Find("Diban/cangkuUI");
         _BuyHuojiUIFirst = transform.parent.Find("BuyHuojia").transform.Find("YujiMianBan");
         _BuyHuojiaUISencond = transform.parent.Find("BuyHuojia").transform.Find("QueDingMianBan");
@@ -475,7 +475,7 @@ void OpenBuyPanelButton(Transform _buypanel, bool OpenOrClose)
     //在UI上生成货架UI的方法。
  void GetHuojiaUI()
  { 
-     _huojiaUIRoot = transform.Find("ShangCheng/zhaungxiuButton/Tubiao/HuojiaGameObject");
+     _huojiaUIRoot = transform.Find("ShangCheng/ZhuangxiuButton/Tubiao/HuojiaGameObject");
      for (int i = 0; i < _huojiaUIRoot.childCount; i++)
      {
          Destroy(_huojiaUIRoot.GetChild(i).gameObject);

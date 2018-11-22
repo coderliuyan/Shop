@@ -149,15 +149,7 @@ public class FloorManager : MonoBehaviour {
     }
     // Update is called once per frame
     void Update () {
-        if (Input.GetKeyDown(KeyCode.A)) {
-            //List<int> a = new List<int>();
-            //a.Add(bornIndex);
-            //if (Test(a)) {
-            //    Debug.Log("到达目的地了");
-            //}
-            FetchActiveWay();
-            
-        }
+      
     }
 
     //寻找路径

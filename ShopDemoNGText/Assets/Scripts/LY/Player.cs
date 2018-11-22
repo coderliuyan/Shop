@@ -112,57 +112,70 @@ public class Player
 
     }
 
-    public static void GetPlayerData()
+    public static bool GetPlayerData()
     {
+        bool haveData = false;
         if (PlayerPrefs.HasKey(Define.PLAYER_LEVEL))
         {
             PlayerLevel = PlayerPrefs.GetInt(Define.PLAYER_LEVEL);
+            haveData = true;
         }
 
         if (PlayerPrefs.HasKey(Define.PLAYER_EXP))
         {
             PlayerExp = PlayerPrefs.GetInt(Define.PLAYER_EXP);
+            haveData = true;
         }
         if (PlayerPrefs.HasKey(Define.SHOP_LEVEL))
         {
             ShopLevel = PlayerPrefs.GetInt(Define.SHOP_LEVEL);
+            haveData = true;
         }
 
         if (PlayerPrefs.HasKey(Define.SHOP_EXP))
         {
             ShopExp = PlayerPrefs.GetInt(Define.SHOP_EXP);
+            haveData = true;
         }
 
         if (PlayerPrefs.HasKey(Define.GOLD))
         {
             GoldNum = PlayerPrefs.GetInt(Define.GOLD);
+            haveData = true;
         }
 
         if (PlayerPrefs.HasKey(Define.DIAMOND))
         {
             DiamondNum = PlayerPrefs.GetInt(Define.DIAMOND);
+            haveData = true;
         }
 
         if (IJson.LoadJsonWithPath(Define.SHOP_STOCK) != null)
         {
             ShopStock = IJson.LoadJsonWithPath(Define.SHOP_STOCK);
+            haveData = true;
         }
 
         if (IJson.LoadJsonWithPath(Define.HUOJIA_TYPE) != null)
         {
             huojiaType = IJson.LoadJsonWithPath(Define.HUOJIA_TYPE);
+            haveData = true;
         }
 
         if (IJson.LoadJsonWithPath(Define.GOODS_TYPE_SHOW) != null)
         {
             huojiaGoodsType = IJson.LoadJsonWithPath(Define.GOODS_TYPE_SHOW);
+            haveData = true;
         }
 
 
         if (IJson.LoadJsonWithPath(Define.GOODS_NUMBER_SHOW) != null)
         {
             huojiaNumber = IJson.LoadJsonWithPath(Define.GOODS_NUMBER_SHOW);
+            haveData = true;
         }
+
+        return haveData;
     }
 
 

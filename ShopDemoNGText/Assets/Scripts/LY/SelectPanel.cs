@@ -42,7 +42,21 @@ public class SelectPanel : MonoBehaviour {
     {
         if (Input.GetKeyDown(KeyCode.W))
         {
-            Dianyuan.animation.Play("face_work",1);
+           // GameDataManger.Instance._huojiaUIId.Add(10001);
+            GetHuojiaUI();
+
+        }
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            GameDataManger.Instance._huojiaUIId.Add(20001);
+            GameDataManger.Instance._huojiaUIId.Add(30001);
+            GameDataManger.Instance._huojiaUIId.Add(40001);
+            GameDataManger.Instance._huojiaUIId.Add(50001);
+            GameDataManger.Instance._huojiaUIId.Add(60001);
+            GameDataManger.Instance._huojiaUIId.Add(70001);
+            GameDataManger.Instance._huojiaUIId.Add(80001);
+            GameDataManger.Instance._huojiaUIId.Add(90001);
+            GetHuojiaUI();
 
         }
     }
@@ -52,18 +66,18 @@ public class SelectPanel : MonoBehaviour {
         wellcomeBtn = transform.Find(wellcomeBtnPath).GetComponent<UIButton>();
         wellcomeBtn.onClick.Add(new EventDelegate(WellComeBtnClick));
 
-        huojiaBtn = transform.Find(huojiaBtnPath).GetComponent<UIButton>();
-        huojiaBtn.onClick.Add(new EventDelegate(AddHuoJia));
-
+        //huojiaBtn = transform.Find(huojiaBtnPath).GetComponent<UIButton>();
+        //huojiaBtn.onClick.Add(new EventDelegate(AddHuoJia));
+ 
         BornGetMoneyPeople();
 
     }
 	
-    private void AddHuoJia()
+    private void AddHuoJia(int huojiaId)
     {
        
 
-        Debug.Log("d点击了货架。");
+        Debug.Log("d点击了货架。" + huojiaId);
       
         
         //首先 检查一下不能交互的区域
@@ -71,7 +85,7 @@ public class SelectPanel : MonoBehaviour {
         {
 
             //首先创建一个货架
-            GameObject huojiaObj = Instantiate(Resources.Load("HJPrefab/HJFruit1") as GameObject);
+            GameObject huojiaObj = Instantiate(Resources.Load("HJPrefab/HJFruit" + huojiaId) as GameObject);
             Debug.Log("检查了路径，并有有效路径。");
 
             FloorManager.Instance.FetchActiveFloor();
@@ -98,7 +112,7 @@ public class SelectPanel : MonoBehaviour {
         }
         
         wellcomeBtn.enabled = shopstate;
-        huojiaBtn.enabled = shopstate;
+       // huojiaBtn.enabled = shopstate;
 
     }
 
@@ -253,6 +267,9 @@ public class SelectPanel : MonoBehaviour {
                 break;
         }
     }
+
+
+    //---------------------------------------------||||||||||||||||||||||||-----------------------------------------
     DragonBones.UnityArmatureComponent Dianyuan;
     void BornGetMoneyPeople()
     {
@@ -265,6 +282,35 @@ public class SelectPanel : MonoBehaviour {
         Dianyuan.gameObject.AddComponent<LongguFollow>()._CustomerMov = CustomerCubeObj;
         Dianyuan.transform.GetComponent<DragonBones.UnityArmatureComponent>().sortingGroup.sortingOrder = 6;
     }
+
+    //在UI上生成货架UI的方法。
+    public void GetHuojiaUI()
+    {
+        UnityEngine.Transform _huojiaUIRoot = transform.Find("ShangCheng/ZhuangxiuButton/Tubiao/HuojiaGameObject");
+        for (int i = 0; i < _huojiaUIRoot.childCount; i++)
+        {
+            Destroy(_huojiaUIRoot.GetChild(i).gameObject);
+        }
+        Debug.Log("=====================货架的数量"+DataManager.Instance.huojiaId.Count);
+        for (int i = 0; i < DataManager.Instance.huojiaId.Count; i++)
+        {
+            GameObject HuojiaObj = (GameObject)Instantiate(Resources.Load("UI/HuojiaButton"));
+            HuojiaObj.transform.SetParent(_huojiaUIRoot);
+            _huojiaUIRoot.GetComponent<UIGrid>().enabled = true;
+            HuojiaObj.transform.Find("huojiaSprite").GetComponent<UISprite>().spriteName =DataManager.Instance.huojiaXml.GetString(DataManager.Instance.huojiaId[i], "name");
+            HuojiaObj.transform.Find("MoneySprite/Num_Label").GetComponent<UILabel>().text = DataManager.Instance.huojiaXml.GetString(DataManager.Instance.huojiaId[i], "coin");
+            int huojiaTage = int.Parse(HuojiaObj.transform.Find("MoneySprite/Num_Label").GetComponent<UILabel>().text);
+            HuojiaObj.transform.localPosition = Vector3.zero;
+            HuojiaObj.transform.localScale = Vector3.one;
+            //HuojiaObj.GetComponent<UIButton>().onClick.Add(new EventDelegate(() => { BornHuojia(GameDataManger.Instance._huojiaUIId[iiii]); }));
+            int num = DataManager.Instance.huojiaId[i];
+            HuojiaObj.GetComponent<UIButton>().onClick.Add(new EventDelegate(() => { AddHuoJia(num); }));
+
+            Debug.Log("货架id = " + DataManager.Instance.huojiaId[i]);
+        }
+
+    }
+
 
 
 

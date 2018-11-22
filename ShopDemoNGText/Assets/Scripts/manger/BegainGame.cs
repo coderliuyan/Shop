@@ -12,14 +12,7 @@ public class BegainGame : MonoBehaviour {
         Button btn = this.GetComponent<Button>();
         btn.onClick.AddListener(OnClick);
 #if UNITY_EDITOR
-        if (APIData.HaveLocalData(APIData.GoldName))
-        {
-            APIData.DeleteLocalDate(APIData.GoldName);
-            APIData.DeleteLocalDate(APIData.PlayerLevelName);
-            APIData.DeleteLocalDate(APIData.PlayerLevelExpName);
-            APIData.DeleteLocalDate(APIData.ShopLevelExpName);
-            APIData.DeleteLocalDate(APIData.ShopLevelName);
-        }
+        Player.DelPlayerData();
 #endif
     }
 
@@ -32,23 +25,14 @@ public class BegainGame : MonoBehaviour {
     //string 类型的商品id,int类型的商品num;
     void GetLocalData()
     {
-        if(APIData.HaveLocalData(APIData.GoldName)){
-            //获取本地存储的金币。
-            APIData.GoldNum = APIData.GetLocalDate(APIData.GoldName);
-            //获取玩家等级
-            APIData.PlayerLevel = APIData.GetLocalDate(APIData.PlayerLevelName);
-            //获取玩家经验值
-            APIData.PlayerLevelExp = APIData.GetLocalDate(APIData.PlayerLevelExpName);
-            //获取店铺等级
-            APIData.ShopLevel = APIData.GetLocalDate(APIData.PlayerLevelName);
-            //获取店铺经验值
-            APIData.ShopLevelExp = APIData.GetLocalDate(APIData.ShopLevelExpName);
-        }else{
-            APIData.GoldNum = 5000;
-            APIData.PlayerLevel = 1;
-            APIData.PlayerLevelExp = 0;
-            APIData.ShopLevel = 1;
-            APIData.ShopLevelExp = 0;
+        if(!Player.GetPlayerData()){
+            
+            Player.GoldNum = 5000;
+            Player.PlayerLevel = 1;
+            Player.PlayerExp = 0;
+            Player.ShopLevel = 1;
+            Player.ShopExp = 0;
+
         }
 
        ////获取本地存储的金币。

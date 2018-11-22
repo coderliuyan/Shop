@@ -9,15 +9,30 @@ public class GameManager : MonoBehaviour {
     private string huojiaPath = @"UIHuoJia/Goods/fruit_huojia";
     private string fruitPath = @"UIHuoJia/Goods/fruit";
 
+    private static GameManager _instance;
+    public static GameManager Instance
+    {
+        get { return _instance; }
+    }
 
 
 
-    TableValue _PlayerXml;
-    TableValue _ShopXml;
-    TableValue _HuojiaXml;
-    TableValue _CustomerXml;
-    TableValue GoodsData;
-    TableValue shopType;
+    public TableValue _PlayerXml;
+    public TableValue _ShopXml;
+    public TableValue _HuojiaXml;
+    public TableValue _CustomerXml;
+    public TableValue GoodsData;
+    public TableValue shopType;
+
+
+
+    private void Awake()
+    {
+        if(_instance == null)
+        {
+            _instance = this;
+        }
+    }
     // Use this for initialization
     void Start () {
         _PlayerXml = ReadExpXml("DataType_playerLevel");
