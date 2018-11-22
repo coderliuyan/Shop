@@ -9,16 +9,48 @@ public class SelectPanel : MonoBehaviour {
     private readonly string wellcomeBtnPath = @"ShangCheng/GameBeginCstomer/WelcomButton";
     private UIButton wellcomeBtn;
 
-    private string huojiaBtnPath = @"ShangCheng/ZhuangxiuButton/Tubiao/HuojiaGameObject/HuojiaButton";
-    private UIButton huojiaBtn;
+    private string moneyPath = @"ShangLan/Money_Jingbi/Money";
+    UILabel moneyLabel;
 
-  
+    private string playerLevelLabelPath = @"ShangLan/PalyerLevelNum_Sprite/PalyerLevelNum";
+    UILabel playerLevelLabel;
 
+    private string playerExpLabelPath = @"ShangLan/PalyerLevelExp_Sprite/PalyerLevelExpNum";
+    UILabel playerExpLabel;
+
+    private string diamondLabelPath = @"ShangLan/Money_zhuanshi/zuanshiNum";
+    UILabel diamondLabel;
+
+    private string shopLevelLabelPath = @"ZhongjianButton/dainpu/ShopLevelNum_Sprite/ShopLevelNum";
+    UILabel shopLevelLabel;
+
+    List<UIButton> huojiaBtnList = new List<UIButton>();
 
     public static SelectPanel selectManager;
 
     Boss boss;
 
+
+    void InitComponet()
+    {
+        wellcomeBtn = transform.Find(wellcomeBtnPath).GetComponent<UIButton>();
+        wellcomeBtn.onClick.Add(new EventDelegate(WellComeBtnClick));
+
+        moneyLabel = transform.Find(moneyPath).GetComponent<UILabel>();
+        playerLevelLabel = transform.Find(playerLevelLabelPath).GetComponent<UILabel>();
+        playerExpLabel = transform.Find(playerExpLabelPath).GetComponent<UILabel>();
+        diamondLabel = transform.Find(diamondLabelPath).GetComponent<UILabel>();
+        shopLevelLabel = transform.Find(shopLevelLabelPath).GetComponent<UILabel>();
+
+        moneyLabel.text = Player.GoldNum.ToString();
+        playerLevelLabel.text = Player.PlayerLevel.ToString();
+        playerExpLabel.text = Player.PlayerExp.ToString();
+        diamondLabel.text = Player.DiamondNum.ToString();
+        shopLevelLabel.text = Player.ShopLevel.ToString();
+
+        BornGetMoneyPeople();
+
+    }
 
     private void Awake()
     {
@@ -32,46 +64,16 @@ public class SelectPanel : MonoBehaviour {
     void Start ()
     {
         InitComponet();
-
-
     }
 
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-           // GameDataManger.Instance._huojiaUIId.Add(10001);
-            GetHuojiaUI();
-
-        }
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            GameDataManger.Instance._huojiaUIId.Add(20001);
-            GameDataManger.Instance._huojiaUIId.Add(30001);
-            GameDataManger.Instance._huojiaUIId.Add(40001);
-            GameDataManger.Instance._huojiaUIId.Add(50001);
-            GameDataManger.Instance._huojiaUIId.Add(60001);
-            GameDataManger.Instance._huojiaUIId.Add(70001);
-            GameDataManger.Instance._huojiaUIId.Add(80001);
-            GameDataManger.Instance._huojiaUIId.Add(90001);
-            GetHuojiaUI();
-
-        }
-    }
-
-    void InitComponet()
-    {
-        wellcomeBtn = transform.Find(wellcomeBtnPath).GetComponent<UIButton>();
-        wellcomeBtn.onClick.Add(new EventDelegate(WellComeBtnClick));
-
-        //huojiaBtn = transform.Find(huojiaBtnPath).GetComponent<UIButton>();
-        //huojiaBtn.onClick.Add(new EventDelegate(AddHuoJia));
- 
-        BornGetMoneyPeople();
 
     }
+
+
 	
     private void AddHuoJia(int huojiaId)
     {
@@ -113,6 +115,12 @@ public class SelectPanel : MonoBehaviour {
         
         wellcomeBtn.enabled = shopstate;
        // huojiaBtn.enabled = shopstate;
+        foreach(UIButton btn in huojiaBtnList)
+        {
+            btn.enabled = shopstate;
+        }
+
+
 
     }
 
@@ -291,7 +299,10 @@ public class SelectPanel : MonoBehaviour {
         {
             Destroy(_huojiaUIRoot.GetChild(i).gameObject);
         }
+
         Debug.Log("=====================货架的数量"+DataManager.Instance.huojiaId.Count);
+
+        huojiaBtnList.Clear();
         for (int i = 0; i < DataManager.Instance.huojiaId.Count; i++)
         {
             GameObject HuojiaObj = (GameObject)Instantiate(Resources.Load("UI/HuojiaButton"));
@@ -304,8 +315,9 @@ public class SelectPanel : MonoBehaviour {
             HuojiaObj.transform.localScale = Vector3.one;
             //HuojiaObj.GetComponent<UIButton>().onClick.Add(new EventDelegate(() => { BornHuojia(GameDataManger.Instance._huojiaUIId[iiii]); }));
             int num = DataManager.Instance.huojiaId[i];
-            HuojiaObj.GetComponent<UIButton>().onClick.Add(new EventDelegate(() => { AddHuoJia(num); }));
-
+            UIButton btn = HuojiaObj.GetComponent<UIButton>();
+            btn.onClick.Add(new EventDelegate(() => { AddHuoJia(num); }));
+            huojiaBtnList.Add(btn);
             Debug.Log("货架id = " + DataManager.Instance.huojiaId[i]);
         }
 

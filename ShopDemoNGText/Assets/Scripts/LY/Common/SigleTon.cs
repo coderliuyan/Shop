@@ -11,10 +11,12 @@ public class Singleton<T> : MonoBehaviour where T : Component{
 				lock (syslock) { //锁一下，避免多线程出问题
 					_instance = FindObjectOfType (typeof(T)) as T;
 					if (_instance == null) {
-						GameObject obj = new GameObject ();
-						//obj.hideFlags = HideFlags.DontSave;
-						obj.hideFlags = HideFlags.HideAndDontSave;
-						_instance = (T)obj.AddComponent (typeof(T));
+                        GameObject obj = new GameObject
+                        {
+                            //obj.hideFlags = HideFlags.DontSave;
+                            hideFlags = HideFlags.HideAndDontSave
+                        };
+                        _instance = (T)obj.AddComponent (typeof(T));
 					}
 				}
 			}
@@ -37,5 +39,12 @@ public class Singleton<T> : MonoBehaviour where T : Component{
 			return  _instance != null;
 		}
 	}
-		
+
+    public static object Syslock
+    {
+        get
+        {
+            return syslock;
+        }
+    }
 }
