@@ -8,19 +8,19 @@ public class SelectPanel : MonoBehaviour {
 
     #region 这里都是label 显示 一些数值
     private string moneyPath = @"ShangLan/Money_Jingbi/Money";
-    UILabel moneyLabel;
+    [HideInInspector] public UILabel moneyLabel;
 
     private string playerLevelLabelPath = @"ShangLan/PalyerLevelNum_Sprite/PalyerLevelNum";
-    UILabel playerLevelLabel;
+    [HideInInspector] public UILabel playerLevelLabel;
 
     private string playerExpLabelPath = @"ShangLan/PalyerLevelExp_Sprite/PalyerLevelExpNum";
-    UILabel playerExpLabel;
+    [HideInInspector] public UILabel playerExpLabel;
 
     private string diamondLabelPath = @"ShangLan/Money_zhuanshi/zuanshiNum";
-    UILabel diamondLabel;
+    [HideInInspector] public UILabel diamondLabel;
 
     private string shopLevelLabelPath = @"ZhongjianButton/dainpu/ShopLevelNum_Sprite/ShopLevelNum";
-    UILabel shopLevelLabel;
+    [HideInInspector] public UILabel shopLevelLabel;
     #endregion 以上都是存放数值的label 和路径
 
 
@@ -56,12 +56,54 @@ public class SelectPanel : MonoBehaviour {
     #endregion
 
 
+    #region 中间的目前尚没有用的按钮
 
-    List<UIButton> huojiaBtnList = new List<UIButton>();
+    private string nongchangBtnPath = @"ZhongjianButton/nongchang";
+    UIButton nongchangBtn;
 
-    public static SelectPanel selectManager;
+    private string jiangbeiBtnPath = @"ZhongjianButton/jiangbei";
+    UIButton jiangbeiBtn;
 
-    Boss boss;
+    private string guanguangBtnPath = @"ZhongjianButton/guanguang";
+    UIButton guanguanBtn;
+
+    private string renwuBtnPath = @"ZhongjianButton/renwu";
+    UIButton renwuBtn;
+
+    private string fensiBtnPaht = @"ZhongjianButton/fensi";
+    UIButton fensiBtn;
+
+    private string gongchangBtnPath = @"ZhongjianButton/gongchang";
+    UIButton gongchangBtn;
+
+    private string dianpuBtnPath = @"ZhongjianButton/dainpu";
+    UIButton dianpuBtn;
+
+    private string shangchengBtnPath = @"ZhongjianButton/shangcheng";
+    UIButton shangchengBtn;
+
+    private string jieri = @"ZhongjianButton/jieri";
+    UIButton jieriBtn;
+
+    private string koubeiBtnPath = @"ZhongjianButton/koubei";
+    UIButton koubeiBtn;
+
+    private string customerBtnPath = @"ZhongjianButton/Customer";
+    UIButton customerBtn;
+
+    private string yuangongBtnPath = @"ZhongjianButton/yuangong";
+    UIButton yuangongBtn;
+
+    #endregion 中间按钮 over
+
+
+
+
+    List<UIButton> huojiaBtnList = new List<UIButton>(); //存放所有货架UI 上的 货架 button
+
+    public static SelectPanel selectManager; //单例
+
+    Boss boss; //店铺 虚拟状态
 
 
     #region 临时值 做为结算UI显示所用
@@ -119,8 +161,47 @@ public class SelectPanel : MonoBehaviour {
         diamondLabel.text = Player.DiamondNum.ToString();
         shopLevelLabel.text = Player.ShopLevel.ToString();
 
-#endregion 获取label 并赋值 结束
+        #endregion 获取label 并赋值 结束
+        nongchangBtn = transform.Find(nongchangBtnPath).GetComponent<UIButton>();
+        nongchangBtn.onClick.Add(new EventDelegate(UIManager.Instance.NoOpen));
 
+        jiangbeiBtn = transform.Find(jiangbeiBtnPath).GetComponent<UIButton>();
+        jiangbeiBtn.onClick.Add(new EventDelegate(UIManager.Instance.NoOpen));
+
+        guanguanBtn = transform.Find(guanguangBtnPath).GetComponent<UIButton>();
+        guanguanBtn.onClick.Add(new EventDelegate(UIManager.Instance.NoOpen));
+
+        renwuBtn = transform.Find(renwuBtnPath).GetComponent<UIButton>();
+        renwuBtn.onClick.Add(new EventDelegate(UIManager.Instance.NoOpen));
+
+        fensiBtn = transform.Find(fensiBtnPaht).GetComponent<UIButton>();
+        fensiBtn.onClick.Add(new EventDelegate(UIManager.Instance.NoOpen));
+
+        gongchangBtn = transform.Find(gongchangBtnPath).GetComponent<UIButton>();
+        gongchangBtn.onClick.Add(new EventDelegate(UIManager.Instance.NoOpen));
+
+        dianpuBtn = transform.Find(dianpuBtnPath).GetComponent<UIButton>();
+        dianpuBtn.onClick.Add(new EventDelegate(UIManager.Instance.NoOpen));
+
+        shangchengBtn = transform.Find(shangchengBtnPath).GetComponent<UIButton>();
+        shangchengBtn.onClick.Add(new EventDelegate(UIManager.Instance.NoOpen));
+
+        jieriBtn = transform.Find(jieri).GetComponent<UIButton>();
+        jieriBtn.onClick.Add(new EventDelegate(UIManager.Instance.NoOpen));
+
+        koubeiBtn = transform.Find(koubeiBtnPath).GetComponent<UIButton>();
+        koubeiBtn.onClick.Add(new EventDelegate(UIManager.Instance.NoOpen));
+
+        customerBtn = transform.Find(customerBtnPath).GetComponent<UIButton>();
+        customerBtn.onClick.Add(new EventDelegate(UIManager.Instance.NoOpen));
+
+        yuangongBtn = transform.Find(yuangongBtnPath).GetComponent<UIButton>();
+        yuangongBtn.onClick.Add(new EventDelegate(UIManager.Instance.NoOpen));
+
+        #region 一些目前没有开发的 按钮
+
+
+        #endregion
 
 
         BornGetMoneyPeople();
@@ -148,11 +229,16 @@ public class SelectPanel : MonoBehaviour {
             case ("CangkuButton"):
                 {
                     Debug.Log("点击了 仓库 按钮");
+                    //仓库里面所有的内容 显示出来 对应的货架的要隐藏
+                    OpenBuyPanelButton(cangchuUI,true);
+                    OpenBuyPanelButton(zhuangxiuUI,false);
                 }
                 break;
             case ("ZhuangxiuButton"):
                 {
                     Debug.Log("点击了 装修 按钮");
+                    OpenBuyPanelButton(cangchuUI, false);
+                    OpenBuyPanelButton(zhuangxiuUI, true);
                 }
                 break;
 
@@ -164,34 +250,55 @@ public class SelectPanel : MonoBehaviour {
     void OpenBuyPanelButton(UnityEngine.Transform _buypanel, bool OpenOrClose)
     {
 
-        Debug.Log("ssssssssssssssssss");
+        if(OpenOrClose){
+            if(_buypanel.gameObject.activeSelf){
+                return;
+            }
+        }
+
         _buypanel.gameObject.SetActive(OpenOrClose);
-        //在仓储界面显示出所有库存Ap内所有的物品
-        if (_buypanel == cangchuUI)
+
+        //在仓储界面显示出所有库存  Shop stock 里面 所有的物品
+        if (_buypanel == cangchuUI  && OpenOrClose)
         {
-            if (_buypanel.Find("cunfangUI").childCount <= 0)
+            UnityEngine.Transform ptran = _buypanel.Find("cunfangUI");
+
+            Debug.Log(ptran.childCount);
+            for (int i = ptran.childCount; i > 0 ; i--)
             {
-                foreach (var item in APIData.ShopStock)
+                Destroy(ptran.GetChild(i-1).gameObject);
+            }
+
+            foreach (var item in Player.ShopStock)
+            {
+                Debug.Log(item.Key);  
+                if (item.Value != 0)
                 {
-                    if (item.Value != 0)
-                    {
-                        CahngkuUI(item.Key, item.Value);
-                    }
+                    CahngkuUI(item.Key, item.Value);
                 }
             }
         }
+
+        //显示 货架 
+        if(_buypanel == zhuangxiuUI)
+        {
+
+        }
+
+
+
     }
 
-    public void CahngkuUI(short _id, int _num)
+    public void CahngkuUI(int _id, int _num)
     {
-        //GameObject CucunGoodsObj = ((GameObject)Instantiate(Resources.Load("UI/CangchuGood")));
-        //UnityEngine.Transform _CunfangUI = cangchuUI.Find("cunfangUI");
-        //CucunGoodsObj.transform.SetParent(_CunfangUI);
-        //CucunGoodsObj.transform.Find("huowuUI").GetComponent<UISprite>().spriteName = GoodsData.GetString(_id, "name");
-        //CucunGoodsObj.transform.Find("huowuUI/Label").GetComponent<UILabel>().text = _num.ToString();
-        //CucunGoodsObj.transform.localPosition = Vector3.zero;
-        //CucunGoodsObj.transform.localScale = Vector3.one;
-        //_CunfangUI.GetComponent<UIGrid>().enabled = true;
+        GameObject CucunGoodsObj = ((GameObject)Instantiate(Resources.Load("UI/CangchuGood")));
+        UnityEngine.Transform _CunfangUI = cangchuUI.Find("cunfangUI");
+        CucunGoodsObj.transform.SetParent(_CunfangUI);
+        CucunGoodsObj.transform.Find("huowuUI").GetComponent<UISprite>().spriteName = DataManager.Instance.goodsData.GetString(_id, "name");
+        CucunGoodsObj.transform.Find("huowuUI/Label").GetComponent<UILabel>().text = _num.ToString();
+        CucunGoodsObj.transform.localPosition = Vector3.zero;
+        CucunGoodsObj.transform.localScale = Vector3.one;
+        _CunfangUI.GetComponent<UIGrid>().enabled = true;
     }
 
     private void Awake()
@@ -212,6 +319,17 @@ public class SelectPanel : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
+        if(Input.GetKeyDown(KeyCode.Space)){
+            Player.ShopStock.Add(1001,100);
+            Player.ShopStock.Add(1002, 100);
+            Player.ShopStock.Add(1003, 100);
+            Player.ShopStock.Add(1004, 100);
+            Player.ShopStock.Add(1005, 100);
+            Player.ShopStock.Add(1006, 100);
+            Player.ShopStock.Add(1007, 100);
+            Player.ShopStock.Add(1008, 100);
+            Player.ShopStock.Add(1010, 100);
+        }
 
     }
 

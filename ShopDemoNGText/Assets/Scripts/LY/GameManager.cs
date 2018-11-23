@@ -54,12 +54,12 @@ public class GameManager : MonoBehaviour {
     // Update is called once per frame
     void Update () {
         //test
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            int shopid = 2001;
-           int str =   _ShopXml.GetInt(shopid,"Exp");
-            Debug.Log(str);
-        }
+        //if (Input.GetKeyDown(KeyCode.Space))
+        //{
+        //    int shopid = 2001;
+        //   int str =   _ShopXml.GetInt(shopid,"Exp");
+        //    Debug.Log(str);
+        //}
 
         //test over
 

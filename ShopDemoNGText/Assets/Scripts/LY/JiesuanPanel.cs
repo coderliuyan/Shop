@@ -38,6 +38,16 @@ public class JiesuanPanel : MonoBehaviour {
         SelectPanel.selectManager.jinbi = 0;
         SelectPanel.selectManager.exp = 0;
 
+        //读取表数据 看看 人物是否可以升级 
+        int nextExp = DataManager.Instance.playerXml.GetInt(Player.PlayerLevel + 1, "Exp");
+        if(Player.PlayerExp >= nextExp)
+        {
+            Player.PlayerLevel++;
+            SelectPanel.selectManager.playerExpLabel.text = Player.PlayerLevel.ToString();
+            Player.SavePlayerData();
+        }
+
+
         gameObject.SetActive(false);
     }
 
@@ -55,6 +65,9 @@ public class JiesuanPanel : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
+        if(Input.GetKeyDown(KeyCode.A)){
+            Debug.Log("A");
+            Debug.Log( DataManager.Instance.playerXml.GetInt(1001,"Exp"));
+        }
 	}
 }

@@ -32,6 +32,8 @@ public class FloorManager : MonoBehaviour {
     //所有地方的父物体
     public Transform[] floors;
 
+    //当前可用的地板的父物体
+    [HideInInspector] public List<Transform> aciveFloors;
 
 
     //存放所有的路径
@@ -137,11 +139,14 @@ public class FloorManager : MonoBehaviour {
     //初始化方法
     public void InitComponent()
     {
+
+
         allFloor = new Dictionary<int, GameObject>();
         floorInterable = new Dictionary<int, GameObject>();
         allTheWays = new List<List<int>>();
         custormWay = new List<int>();
         noBuildArea = new List<int>();
+
 
         //赋值
         FetchAllFloor();
