@@ -64,6 +64,14 @@ public class SelectPanel : MonoBehaviour {
     Boss boss;
 
 
+    #region 临时值 做为结算UI显示所用
+    public int koubei = 0;
+    public int jinbi = 0;
+    public int exp = 0;
+
+    #endregion
+
+
     void InitComponet()
     {
 
@@ -286,7 +294,7 @@ public class SelectPanel : MonoBehaviour {
 
         
 
-
+        //SHOP TIME 应该根据最后一个顾客行动完 生成 一个时间
         Invoke("ShopEnd",Define.SHOP_TIME);
 
     }
@@ -295,20 +303,23 @@ public class SelectPanel : MonoBehaviour {
     {
         while(boss.State == Boss.GameState.Shoping)
         {
+            jinbi += 10;
+            exp += 1;
             yield return new WaitForSeconds(Define.CUSTOMER_TIME);
-
+           
             StartCoroutine(GoShoping());
         }
        
     }
 
-
+    //根据不同的时间 和 结账 时间 来控制整个 购买过程
     IEnumerator GoShoping()
     {
 
         GameObject outDoorObj = FloorManager.Instance.allFloor[Define.OUT_DOOR_POS];
         GameObject bornObj = FloorManager.Instance.allFloor[Define.BORN_POS];
 
+        //创建的顾客会是随机产生 在这里 需要创建多个 顾客预设体 ,然后随机数调用
         GameObject newCustomer = Instantiate(Resources.Load("CustomerPrefab/Customer1") as GameObject,Vector3.zero,Quaternion.identity);
         newCustomer.transform.SetParent(bornObj.transform);
         newCustomer.transform.localPosition = Vector3.zero;
@@ -368,6 +379,19 @@ public class SelectPanel : MonoBehaviour {
                 newCustomer.transform.localRotation = Quaternion.Euler(180f, 180f, 180f);
                 Dianyuan.animation.Play("face_work", 1);
                 yield return new WaitForSeconds(0.5f);
+
+                //结账结束后 添加玩家金钱 其实是要根据每一个顾客是否买到了对应产品 是否满意来进行操作的
+                //假设每一个人是 10块钱 
+                Player.GoldNum += 10;
+                moneyLabel.text = Player.GoldNum.ToString();
+
+                Player.PlayerExp += 1;
+                playerExpLabel.text = Player.PlayerExp.ToString();
+
+             
+
+
+
             }
 
 
@@ -389,9 +413,13 @@ public class SelectPanel : MonoBehaviour {
 
     void ShopEnd()
     {
-
         Debug.Log("买完啦...");
         CloseShop(true);
+        //全部结束之后调取结算界面 显示数据 本地储存数据  
+        koubei += 1;
+        Player.ShopLevel += koubei;
+        shopLevelLabel.text = Player.ShopLevel.ToString();
+        UIManager.Instance.ShowJiesuanPanel();
     }
 
     public void StateChanged(){

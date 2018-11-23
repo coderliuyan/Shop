@@ -10,6 +10,11 @@ public class UIManager : Singleton<UIManager> {
     private string buyPanelPath = @"BuyPanel_all";
     GameObject buyPanel;
 
+    private string jiesuanUIPath = @"jiesuanUI";
+    GameObject jiesuanPanel;
+
+    private string messagePanelPath = @"MessagePanel";
+    GameObject messagePanel;
 
 	// Use this for initialization
 	void Start () {
@@ -21,6 +26,8 @@ public class UIManager : Singleton<UIManager> {
     {
         noOpenPanel = transform.Find(noOpenPanelPath).gameObject;
         buyPanel = transform.Find(buyPanelPath).gameObject;
+        jiesuanPanel = transform.Find(jiesuanUIPath).gameObject;
+        messagePanel = transform.Find(messagePanelPath).gameObject;
     }
 	
 	// Update is called once per frame
@@ -42,5 +49,15 @@ public class UIManager : Singleton<UIManager> {
     public void ShowBuyPanel()
     {
         buyPanel.SetActive(true);
+    }
+
+    public void ShowJiesuanPanel()
+    {
+        jiesuanPanel.SetActive(true);
+    }
+
+    public void ShowMessagePanel()
+    {
+        messagePanel.SetActive(true);
     }
 }

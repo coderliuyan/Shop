@@ -19,6 +19,10 @@ public class DataManager : Singleton<DataManager> {
     public List<int> huojiaId = new List<int>();
 
 
+    //msg label 中的提示信息
+    public string msgText;
+
+
     // Use this for initialization
     void Start () {
         ReadXML();

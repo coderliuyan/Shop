@@ -63,12 +63,20 @@ public class HJFloow : MonoBehaviour {
                             isMove = false;
                             this.gameObject.AddComponent<SphereCollider>().radius = 0.5f;
                             this.gameObject.tag = "huojia";
+                        }else{
+                            Debug.Log("这个地方不能建造！");
+                            DataManager.Instance.msgText = "检查位置否正确  建造失败";
+                            UIManager.Instance.ShowMessagePanel();
+                            Destroy(gameObject);
+                            return;
                         }
 
 
                         if (!FloorManager.Instance.FetchActiveWay())
                         {
                             Debug.Log("这个地方不能建造！");
+                            DataManager.Instance.msgText = "检查位置否正确  建造失败";
+                            UIManager.Instance.ShowMessagePanel();
                             Destroy(gameObject);
                             return;
                         }
@@ -77,6 +85,8 @@ public class HJFloow : MonoBehaviour {
                     else
                     {
                         Debug.Log("不能拜访货架， 销毁货架。");
+                        DataManager.Instance.msgText = "检查位置否正确  建造失败";
+                        UIManager.Instance.ShowMessagePanel();
                         Destroy(gameObject);
                     }
 
