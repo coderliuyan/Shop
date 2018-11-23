@@ -111,6 +111,9 @@ public class SelectPanel : MonoBehaviour {
     public int jinbi = 0;
     public int exp = 0;
 
+
+    //存放所有产生的顾客
+    List<GameObject> tempCustomers = new List<GameObject>();
     #endregion
 
 
@@ -372,15 +375,12 @@ public class SelectPanel : MonoBehaviour {
         {
             boss.State = Boss.GameState.Shoping;
         }
-        
-        wellcomeBtn.enabled = shopstate;
-       // huojiaBtn.enabled = shopstate;
-        foreach(UIButton btn in huojiaBtnList)
-        {
-            btn.enabled = shopstate;
-        }
 
-
+        //wellcomeBtn.enabled = shopstate;
+        //foreach (UIButton btn in huojiaBtnList)
+        //{
+        //    btn.enabled = shopstate;
+        //}
 
     }
 
@@ -390,6 +390,7 @@ public class SelectPanel : MonoBehaviour {
     {
 
         CloseShop(false);
+        ChangeButtonState(false);
 
         //获取可交互的地板
         FloorManager.Instance.FetchActiveFloor();
@@ -442,6 +443,8 @@ public class SelectPanel : MonoBehaviour {
         newCustomer.transform.SetParent(bornObj.transform);
         newCustomer.transform.localPosition = Vector3.zero;
         newCustomer.transform.localRotation = Quaternion.identity;
+
+        tempCustomers.Add(newCustomer);
 
         UnityArmatureComponent arc = newCustomer.GetComponent<UnityArmatureComponent>();
         arc.animation.Play("face_walk", -1);
@@ -500,7 +503,7 @@ public class SelectPanel : MonoBehaviour {
 
                 //结账结束后 添加玩家金钱 其实是要根据每一个顾客是否买到了对应产品 是否满意来进行操作的
                 //假设每一个人是 10块钱 
-                Player.GoldNum += 10;
+                Player.GoldNum += 100;
                 moneyLabel.text = Player.GoldNum.ToString();
 
                 Player.PlayerExp += 1;
@@ -523,6 +526,7 @@ public class SelectPanel : MonoBehaviour {
 
         yield return new WaitForSeconds(0.3f);
 
+        tempCustomers.Remove(newCustomer);
         Destroy(newCustomer);
     }
 
@@ -531,14 +535,42 @@ public class SelectPanel : MonoBehaviour {
 
     void ShopEnd()
     {
-        Debug.Log("买完啦...");
+
         CloseShop(true);
-        //全部结束之后调取结算界面 显示数据 本地储存数据  
-        koubei += 1;
-        Player.ShopLevel += koubei;
-        shopLevelLabel.text = Player.ShopLevel.ToString();
-        UIManager.Instance.ShowJiesuanPanel();
+        StartCoroutine(StartJisuan());
+       
     }
+
+    IEnumerator  StartJisuan()
+    {
+        while(true){
+            yield return new WaitForSeconds(Define.CUSTOMER_TIME);
+            if(tempCustomers.Count == 0){
+                koubei += 1;
+                Player.ShopLevel += koubei;
+                shopLevelLabel.text = Player.ShopLevel.ToString();
+
+                //到最后一个人结束 在调用 
+                UIManager.Instance.ShowJiesuanPanel();
+
+                Debug.Log("买完啦...");
+
+              
+                break;
+            }
+        }
+ 
+    }
+
+    public void ChangeButtonState(bool state)
+    {
+        wellcomeBtn.enabled = state;
+        foreach (UIButton btn in huojiaBtnList)
+        {
+            btn.enabled = state;
+        }
+    }
+
 
     public void StateChanged(){
         switch(boss.State)

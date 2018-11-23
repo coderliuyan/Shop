@@ -39,13 +39,19 @@ public class JiesuanPanel : MonoBehaviour {
         SelectPanel.selectManager.exp = 0;
 
         //读取表数据 看看 人物是否可以升级 
-        int nextExp = DataManager.Instance.playerXml.GetInt(Player.PlayerLevel + 1, "Exp");
+        int playerId = Player.PlayerLevel + 1000;
+        Debug.Log(playerId);
+        int nextExp = DataManager.Instance.playerXml.GetInt(playerId, "Exp");
         if(Player.PlayerExp >= nextExp)
         {
             Player.PlayerLevel++;
-            SelectPanel.selectManager.playerExpLabel.text = Player.PlayerLevel.ToString();
+            SelectPanel.selectManager.playerLevelLabel.text = Player.PlayerLevel.ToString();
             Player.SavePlayerData();
         }
+
+        //激活 select panel 底部 的button 
+
+        SelectPanel.selectManager.ChangeButtonState(true);
 
 
         gameObject.SetActive(false);

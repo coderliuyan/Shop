@@ -25,16 +25,17 @@ public class BegainGame : MonoBehaviour {
     //string 类型的商品id,int类型的商品num;
     void GetLocalData()
     {
+        Player.DelPlayerData();
         if(!Player.GetPlayerData()){
-            
             Player.GoldNum = 5000;
             Player.PlayerLevel = 1;
             Player.PlayerExp = 0;
             Player.ShopLevel = 1;
             Player.ShopExp = 0;
-
         }
 
+
+     
        ////获取本地存储的金币。
         //APIData.GoldNum = APIData.GetLocalDate(APIData.GoldName);
         //if (APIData.GoldNum < 0)
