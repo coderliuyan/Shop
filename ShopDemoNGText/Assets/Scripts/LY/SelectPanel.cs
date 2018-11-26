@@ -547,39 +547,64 @@ public class SelectPanel : MonoBehaviour {
                     huojiaSaleTimes--;
                     huojiaObj.GetComponent<HuoJiaController>().saleTimes = huojiaSaleTimes;
                 }
+                if (huojiaSaleTimes == 0)
+                {
+                    UnityEngine.Transform goodsObj = huojiaObj.transform.Find("goods");
+                    goodsObj.GetComponent<SpriteRenderer>().sprite = null;
+                }
             }
 
             if (Player.huojiaType.ContainsKey(right))
             {
                 int huojiaTypeId = Player.huojiaType[right];
+                GameObject huojiaObj = Player.huojiaObjs[right];
+                int huojiaSaleTimes = huojiaObj.GetComponent<HuoJiaController>().saleTimes;
 
                 int customerNeedHuojiaId = DataManager.Instance.customerXml.GetInt(customerId, "shelfId");
-                if (huojiaTypeId == customerNeedHuojiaId && ctn.buyTimes > 0)
+                if (huojiaTypeId == customerNeedHuojiaId && ctn.buyTimes > 0 && huojiaSaleTimes > 0)
                 {
+                
                     Debug.Log("右边有货架");
                     arc.animation.Play("face_work", -1);
                     newCustomer.transform.localRotation = Quaternion.Euler(0f, 180f, 0);
                     yield return new WaitForSeconds(1f);
                     ctn.buyTimes--;
+                    huojiaSaleTimes--;
+                    huojiaObj.GetComponent<HuoJiaController>().saleTimes = huojiaSaleTimes;
+                }
+                if (huojiaSaleTimes == 0)
+                {
+                    UnityEngine.Transform goodsObj = huojiaObj.transform.Find("goods");
+                    goodsObj.GetComponent<SpriteRenderer>().sprite = null;
                 }
 
-         
+
             }
             if (Player.huojiaType.ContainsKey(forward))
             {
                 int huojiaTypeId = Player.huojiaType[forward];
+                GameObject huojiaObj = Player.huojiaObjs[forward];
+                int huojiaSaleTimes = huojiaObj.GetComponent<HuoJiaController>().saleTimes;
                 int customerNeedHuojiaId = DataManager.Instance.customerXml.GetInt(customerId, "shelfId");
 
-                if (huojiaTypeId == customerNeedHuojiaId && ctn.buyTimes> 0)
+                if (huojiaTypeId == customerNeedHuojiaId && ctn.buyTimes> 0 && huojiaSaleTimes > 0)
                 {
                     Debug.Log("前面有货架");
                     arc.animation.Play("face_work", -1);
                     newCustomer.transform.localRotation = Quaternion.Euler(0, 0, 0);
                     yield return new WaitForSeconds(1f);
                     ctn.buyTimes--;
+                    huojiaSaleTimes--;
+                    huojiaObj.GetComponent<HuoJiaController>().saleTimes = huojiaSaleTimes;
                 }
 
-              
+                if (huojiaSaleTimes == 0)
+                {
+                    UnityEngine.Transform goodsObj = huojiaObj.transform.Find("goods");
+                    goodsObj.GetComponent<SpriteRenderer>().sprite = null;
+                }
+
+
             }
 
 
