@@ -30,6 +30,10 @@ public class BuyPanel : MonoBehaviour {
     private string quitBtnPath = @"BuyPanel/Quit_Button";
     UIButton quitBtn;
 
+    //结算按钮
+    private string jiesuanBtnPath = @"BuyPanel/Gouwuche/jisuan";
+    UIButton jiesuanBtn;
+
     #endregion
 
     #region 货物的父节点
@@ -75,6 +79,7 @@ public class BuyPanel : MonoBehaviour {
     [HideInInspector] public int totalPrice = 0; //总价格
     [HideInInspector] public int huowuNumer = 0; //货物数量
     [HideInInspector] public int goodsPrice = 0; //货物单价
+    [HideInInspector] public int currentPrice = 0; //当前价格
 
     private string totalPriceLabelPath = @"BuyPanel/Gouwuche/heji_lable/heji/ajinbiNum";
     UILabel totalPriceLabel;
@@ -101,7 +106,8 @@ public class BuyPanel : MonoBehaviour {
         totalPriceLabel = transform.Find(totalPriceLabelPath).GetComponent<UILabel>();
         quitBtn = transform.Find(quitBtnPath).GetComponent<UIButton>();
         quitBtn.onClick.Add(new EventDelegate(()=> { ClickQuitButton(); }));
-
+        jiesuanBtn = transform.Find(jiesuanBtnPath).GetComponent<UIButton>();
+        jiesuanBtn.onClick.Add(new EventDelegate(()=> { ClickJieSuanButton(); }));
 
 
         //二级页面
@@ -124,6 +130,73 @@ public class BuyPanel : MonoBehaviour {
 
     }
 
+    //点击了结算按钮
+
+    void ClickJieSuanButton()
+    {
+
+#if TEST
+        Player.GoldNum = 1000;
+#endif
+
+
+        //结算 , 钱不够 提示 - > message panel , 钱够 结算 -> 存入shop  stock
+        if(totalPrice > Player.GoldNum){
+            //钱不够 
+            DataManager.Instance.msgText = @"钱不够呀,请减少货物或充值.";
+            UIManager.Instance.ShowMessagePanel();
+            return;
+        }
+
+        //没花钱
+        if(totalPrice == 0){
+            DataManager.Instance.msgText = @"你啥都没买呀,是不是脑子瓦头了?";
+            UIManager.Instance.ShowMessagePanel();
+            return;
+        }
+
+        //钱够,要把货物买下来 ,减少钱, 货物存入 shop stock . 本地保存,更新UI. 清空购物车,数据清零 ,提示购买成功
+        Player.GoldNum -= totalPrice;
+        //提取数据进行存储
+        for (int i = 0; i < gouwuCheTran.childCount; i++)
+        {
+            short _Linid = short.Parse(gouwuCheTran.GetChild(i).gameObject.name);
+            string numstring = gouwuCheTran.GetChild(i).gameObject.transform.Find("FirstNameNum").GetComponent<UILabel>().text;
+            int numInt1 = System.Convert.ToInt32(System.Text.RegularExpressions.Regex.Replace(numstring, @"[^0-9]+", ""));
+            //SaveGoodsNum(_Linid, numInt1);
+            //CangkuUI(_Linid, numInt1);
+
+            if (Player.ShopStock.ContainsKey(_Linid))
+            {
+                Player.ShopStock[_Linid] += numInt1;
+            }
+            else
+            {
+                Player.ShopStock.Add(_Linid,numInt1);
+            }
+            SelectPanel.selectManager.CahngkuUI(_Linid,numInt1);
+
+
+
+
+        }
+        Player.SavePlayerData();
+
+        for (int i = 0; i < gouwuCheTran.transform.childCount; i++)
+        {
+            Destroy(gouwuCheTran.transform.GetChild(i).gameObject);
+        }
+
+
+        totalPrice = 0;
+        totalPriceLabel.text = "0";
+
+        DataManager.Instance.msgText = @"购买成功!";
+        UIManager.Instance.ShowMessagePanel();
+
+    }
+
+
     //点击了退出按钮
     void ClickQuitButton()
     {
@@ -136,9 +209,9 @@ public class BuyPanel : MonoBehaviour {
     void AddNumButton()
     {
         huowuNumer += 100;
-        totalPrice = goodsPrice * huowuNumer;
+        currentPrice = goodsPrice * huowuNumer;
         huowuNumberLabel.text = huowuNumer.ToString();
-        moneyLabel.text = totalPrice.ToString();
+        moneyLabel.text = currentPrice.ToString();
     }
 
 
@@ -164,9 +237,10 @@ public class BuyPanel : MonoBehaviour {
         obj.transform.localScale = Vector3.one;
         obj.transform.Find("Quit").GetComponent<UIButton>().onClick.Add(new EventDelegate(() => { AddQuitClick(obj); }));
         gouwuCheTran.GetComponent<UIGrid>().enabled = true;
-        gouwuCheTran.gameObject.SetActive(false);
+        secondPanelTran.gameObject.SetActive(false);
         SumPrice(int.Parse(_price));
-        //obj.name = _id.ToString();
+        obj.name = goodsID.ToString();
+
 
     }
 
@@ -179,6 +253,7 @@ public class BuyPanel : MonoBehaviour {
         int _priceJianInt;
         _priceJianText = _BuyLable.transform.Find("jinbi/ajinbiNum").GetComponent<UILabel>().text;
         _priceJianInt = int.Parse(_priceJianText);
+        Debug.Log("-------------- " + _priceJianText);
         JianPrice(_priceJianInt);
         Destroy(_BuyLable);
         gouwuCheTran.GetComponent<UIGrid>().enabled = true;
@@ -279,8 +354,9 @@ public class BuyPanel : MonoBehaviour {
     void ResetZero()
     {
         huowuNumer = 0;
+        currentPrice = 0;
         huowuNumberLabel.text = huowuNumer.ToString();
-        moneyLabel.text = (huowuNumer * goodsPrice).ToString();
+        moneyLabel.text =currentPrice.ToString();
     }
 
     void DestoryChild(Transform _destory)
