@@ -323,15 +323,16 @@ public class SelectPanel : MonoBehaviour {
     void Update()
     {
         if(Input.GetKeyDown(KeyCode.Space)){
-            Player.ShopStock.Add(1001,100);
-            Player.ShopStock.Add(1002, 100);
-            Player.ShopStock.Add(1003, 100);
-            Player.ShopStock.Add(1004, 100);
-            Player.ShopStock.Add(1005, 100);
-            Player.ShopStock.Add(1006, 100);
-            Player.ShopStock.Add(1007, 100);
-            Player.ShopStock.Add(1008, 100);
-            Player.ShopStock.Add(1010, 100);
+            //Player.ShopStock.Add(1001,100);
+            //Player.ShopStock.Add(1002, 100);
+            //Player.ShopStock.Add(1003, 100);
+            //Player.ShopStock.Add(1004, 100);
+            //Player.ShopStock.Add(1005, 100);
+            //Player.ShopStock.Add(1006, 100);
+            //Player.ShopStock.Add(1007, 100);
+            //Player.ShopStock.Add(1008, 100);
+            //Player.ShopStock.Add(1010, 100);
+            Player.GoldNum += 1000;
         }
 
     }
@@ -366,8 +367,8 @@ public class SelectPanel : MonoBehaviour {
             HuoJiaController hjc = huojiaObj.GetComponent<HuoJiaController>();
             hjc.huojiaLevel = 1;
             hjc.huojiaDirection = 1;
-            int saleTimes = DataManager.Instance.huojiaXml.GetInt(huojiaId,"sales");
-            hjc.saleTimes = saleTimes;
+            //int saleTimes = DataManager.Instance.huojiaXml.GetInt(huojiaId,"sales"); //在补货的时候再添加
+            //hjc.saleTimes = saleTimes;
             hjc.huojiaID = huojiaId;
 
 
@@ -463,18 +464,28 @@ public class SelectPanel : MonoBehaviour {
 
         GameObject outDoorObj = FloorManager.Instance.allFloor[Define.OUT_DOOR_POS];
         GameObject bornObj = FloorManager.Instance.allFloor[Define.BORN_POS];
+        int randomNum = 0;
+        if (Player.ShopLevel > 1)
+        {
+            randomNum = Random.Range(0, Player.ShopLevel - 1);
+        }
+        
+        int customerId = CustomerManager.Instance.customerIDList[randomNum];
 
         //创建的顾客会是随机产生 在这里 需要创建多个 顾客预设体 ,然后随机数调用
-        GameObject newCustomer = Instantiate(Resources.Load("CustomerPrefab/Customer1") as GameObject,Vector3.zero,Quaternion.identity);
+        GameObject newCustomer = Instantiate(Resources.Load("CustomerPrefab/Customer" + customerId) as GameObject,Vector3.zero,Quaternion.identity);
         newCustomer.transform.SetParent(bornObj.transform);
         newCustomer.transform.localPosition = Vector3.zero;
         newCustomer.transform.localRotation = Quaternion.identity;
 
+        CustomerNeed ctn = newCustomer.GetComponent<CustomerNeed>();
+        ctn.customerID = customerId;
+        ctn.buyTimes = DataManager.Instance.customerXml.GetInt(customerId, "boneNum");
         tempCustomers.Add(newCustomer);
 
         UnityArmatureComponent arc = newCustomer.GetComponent<UnityArmatureComponent>();
         arc.animation.Play("face_walk", -1);
-        arc._sortingOrder = bornObj.GetComponent<SpriteRenderer>().sortingOrder + 1;
+        arc._sortingOrder = bornObj.GetComponent<SpriteRenderer>().sortingOrder + 10;
         int i = 0;
 
         //每一个顾客走到最后
@@ -511,10 +522,65 @@ public class SelectPanel : MonoBehaviour {
 
             yield return new WaitForSeconds(0.3f);
 
-            // Debug.Log(FloorManager.Instance.custormWay[i]);
-            // int index = FloorManager.Instance.custormWay[i];
-            // Vector3 nextPos = FloorManager.Instance.allFloor[index].transform.position;
+            //走到了下一个点位，看看有没有能交互的货架
+            int left = FloorManager.Instance.custormWay[i] - 1;
+            int right = FloorManager.Instance.custormWay[i] + 1;
+            int forward = FloorManager.Instance.custormWay[i] + 10;
 
+            //判断是否是顾客需要的货架，然后再判断货架上是否有货物  
+
+            if (Player.huojiaType.ContainsKey(left))
+            {
+                int huojiaTypeId = Player.huojiaType[left];
+                GameObject huojiaObj = Player.huojiaObjs[left];
+                Debug.Log(huojiaObj.name);
+                int huojiaSaleTimes =  huojiaObj.GetComponent<HuoJiaController>().saleTimes;
+
+
+                int customerNeedHuojiaId = DataManager.Instance.customerXml.GetInt(customerId, "shelfId");
+                if (huojiaTypeId == customerNeedHuojiaId && ctn.buyTimes > 0 && huojiaSaleTimes > 0) {
+                    Debug.Log("左边有货架" + huojiaTypeId);
+                    arc.animation.Play("back_work", -1);
+                    newCustomer.transform.localRotation = Quaternion.Euler(180f, 0, 180f);
+                    yield return new WaitForSeconds(1f);
+                    ctn.buyTimes--;
+                    huojiaSaleTimes--;
+                    huojiaObj.GetComponent<HuoJiaController>().saleTimes = huojiaSaleTimes;
+                }
+            }
+
+            if (Player.huojiaType.ContainsKey(right))
+            {
+                int huojiaTypeId = Player.huojiaType[right];
+
+                int customerNeedHuojiaId = DataManager.Instance.customerXml.GetInt(customerId, "shelfId");
+                if (huojiaTypeId == customerNeedHuojiaId && ctn.buyTimes > 0)
+                {
+                    Debug.Log("右边有货架");
+                    arc.animation.Play("face_work", -1);
+                    newCustomer.transform.localRotation = Quaternion.Euler(0f, 180f, 0);
+                    yield return new WaitForSeconds(1f);
+                    ctn.buyTimes--;
+                }
+
+         
+            }
+            if (Player.huojiaType.ContainsKey(forward))
+            {
+                int huojiaTypeId = Player.huojiaType[forward];
+                int customerNeedHuojiaId = DataManager.Instance.customerXml.GetInt(customerId, "shelfId");
+
+                if (huojiaTypeId == customerNeedHuojiaId && ctn.buyTimes> 0)
+                {
+                    Debug.Log("前面有货架");
+                    arc.animation.Play("face_work", -1);
+                    newCustomer.transform.localRotation = Quaternion.Euler(0, 0, 0);
+                    yield return new WaitForSeconds(1f);
+                    ctn.buyTimes--;
+                }
+
+              
+            }
 
 
             //到了结账的位置
@@ -534,9 +600,6 @@ public class SelectPanel : MonoBehaviour {
 
                 Player.PlayerExp += 1;
                 playerExpLabel.text = Player.PlayerExp.ToString();
-
-             
-
 
 
             }

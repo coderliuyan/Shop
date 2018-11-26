@@ -9,6 +9,9 @@ public class GameManager : MonoBehaviour {
     private string huojiaPath = @"UIHuoJia/Goods/fruit_huojia";
     private string fruitPath = @"UIHuoJia/Goods/fruit";
 
+    private bool isClickFunctionMenu = false;
+
+
     private static GameManager _instance;
     public static GameManager Instance
     {
@@ -65,6 +68,7 @@ public class GameManager : MonoBehaviour {
 
         if (Input.GetMouseButtonDown(0))
         {
+
             Ray ray = (Camera.main.ScreenPointToRay(Input.mousePosition));
             RaycastHit hit;
             if ((Physics.Raycast(ray, out hit)))
@@ -94,14 +98,25 @@ public class GameManager : MonoBehaviour {
                     //展开功能面板
                     hit.transform.GetChild(0).gameObject.SetActive(!hit.transform.GetChild(0).gameObject.activeSelf);
 
-
-
+                    isClickFunctionMenu = true;
+                    return;
+                }
+                else
+                {
+                    isClickFunctionMenu = false;
                 }
 
                 if(hit.transform.tag == "upLevel")
                 {
                     //升级货架
                     Debug.Log("升级货架");
+                    UpdataHuoJia(hit.transform.parent.parent.gameObject);
+                    isClickFunctionMenu = true;
+                    return;
+                }
+                else
+                {
+                    isClickFunctionMenu = false ;
                 }
 
                 if(hit.transform.tag == "buhuo")
@@ -110,11 +125,16 @@ public class GameManager : MonoBehaviour {
                     Debug.Log("补货");
                     GameObject objP = hit.transform.parent.parent.gameObject;
                     BuhuoWork(objP);
-
-
+                    isClickFunctionMenu = true;
+                    return;
+                }
+                else
+                {
+                    isClickFunctionMenu = false;
                 }
 
-                if(hit.transform.tag == "turn")
+
+                if (hit.transform.tag == "turn")
                 {
                     //旋转货架
                     Debug.Log("旋转货架");
@@ -122,16 +142,56 @@ public class GameManager : MonoBehaviour {
                     //获取父物体的图片 进行旋转 
                     Transform pp = hit.transform.parent.parent;
                     TurnHuoJia(pp.gameObject);
-                   
-
+                    isClickFunctionMenu = true;
+                    return;
+                }
+                else
+                {
+                    isClickFunctionMenu = false;
                 }
 
+
             }
+
+            if (!isClickFunctionMenu)
+            {
+                //如果每点击功能面板 就把货架上面的UI关了 
+                foreach (GameObject item in Player.huojiaObjs.Values)
+                {
+                    item.transform.Find("FunctionMenu").gameObject.SetActive(false);
+                }
+            }
+
+
         }
 	}
 
-    
+    //升级货架
+    void UpdataHuoJia(GameObject obj)
+    {
+        HuoJiaController hjc = obj.GetComponent<HuoJiaController>();
+        int coins = DataManager.Instance.huojiaXml.GetInt(hjc.huojiaID + hjc.huojiaLevel, "coin");
+        if(Player.GoldNum >= coins)
+        {
+            //可以升级货架
+            Player.GoldNum -= coins;
+            Player.SavePlayerData(ConfigDefine.Define.GOLD);
+            hjc.huojiaLevel++;
+            DataManager.Instance.msgText = "货架成功升级到" + hjc.huojiaLevel + "级！";
+            UIManager.Instance.ShowMessagePanel();
+        }
+        else
+        {
+            DataManager.Instance.msgText = "你的钱不够！";
+            UIManager.Instance.ShowMessagePanel();
+        }
 
+        
+
+    }
+
+
+    //补货
     private void BuhuoWork(GameObject obj)
     {
         //先获取货架信息，货架类型， 货架等级 ，可以拜访的物品，再匹配拥有的物品 如果有点击后进行拜访 如果无 进行提示
@@ -143,10 +203,14 @@ public class GameManager : MonoBehaviour {
         goodsObj.GetComponent<SpriteRenderer>().sortingOrder = obj.GetComponent<SpriteRenderer>().sortingOrder + 10;
 
         //点击补货之后floor manager要计算出那些地方可以和顾客交互,交互的货架的物体也要存起来,当然还要存货架类型,对应类型才会停下来交互
-        int huojiaPos = GetObjName(obj.transform.parent.gameObject);
-        Debug.Log(huojiaPos);
-        int huojiaID = goodsObj.GetComponent<Goods>().huojiaID;
-        Debug.Log(huojiaID);
+        //int huojiaPos = GetObjName(obj.transform.parent.gameObject);
+        //Debug.Log(huojiaPos);
+        //int huojiaID = goodsObj.GetComponent<Goods>().huojiaID;
+        //Debug.Log(huojiaID);
+
+        HuoJiaController hjc = obj.GetComponent<HuoJiaController>();
+        int huojiaId = hjc.huojiaLevel + hjc.huojiaID - 1;
+        hjc.saleTimes = DataManager.Instance.huojiaXml.GetInt(huojiaId,"sales");
 
 
     }

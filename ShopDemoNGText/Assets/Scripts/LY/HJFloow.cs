@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using ConfigDefine;
 public class HJFloow : MonoBehaviour {
 
     private bool isMove = true;
@@ -58,7 +58,7 @@ public class HJFloow : MonoBehaviour {
 
                         HuoJiaController hjc = transform.GetComponent<HuoJiaController>();
                         int huojiaId =  hjc.huojiaID;
-                        int coins = DataManager.Instance.huojiaXml.GetInt(huojiaId,"coins");
+                        int coins = DataManager.Instance.huojiaXml.GetInt(huojiaId,"coin");
                         if(Player.GoldNum < coins)
                         {
                             DataManager.Instance.msgText = "钱不够，不能建造！";
@@ -74,7 +74,28 @@ public class HJFloow : MonoBehaviour {
                             this.gameObject.AddComponent<SphereCollider>().radius = 0.5f;
                             this.gameObject.tag = "huojia";
 
+                            Debug.Log(Player.GoldNum);
                             Player.GoldNum -= coins;
+                            Debug.Log(Player.GoldNum);
+                            SelectPanel.selectManager.moneyLabel.text = Player.GoldNum.ToString();
+
+                            //货架位置和物体保存一下
+                            if (Player.huojiaObjs.ContainsValue(gameObject)) {
+                                 foreach(int key in Player.huojiaObjs.Keys)
+                                {
+                                    if(Player.huojiaObjs[key] == gameObject)
+                                    {
+                                        Player.huojiaObjs.Remove(key);
+                                    }
+                                }
+                            }
+                            Player.huojiaObjs.Add(GetObjName(gameObject.transform.parent.gameObject) , gameObject);
+
+                            if (Player.huojiaType.ContainsKey(index))
+                            {
+                                Player.huojiaType.Remove(index);
+                            }
+                            Player.huojiaType.Add(index,hjc.huojiaID);
                             if (Player.huojiaDiretion.ContainsKey(index))
                             {
                                 Player.huojiaDiretion.Remove(index);
@@ -85,17 +106,18 @@ public class HJFloow : MonoBehaviour {
                                 Player.huojiaLevel.Remove(index);
                             }
                             Player.huojiaLevel.Add(index, hjc.huojiaLevel);
-                            if (Player.huojiaSaleTimes.ContainsKey(index))
-                            {
-                                Player.huojiaSaleTimes.Remove(index);
-                            }
-                            Player.huojiaSaleTimes.Add(index, hjc.saleTimes);
+                           
 
-                            Player.SavePlayerData();
+                            Player.SavePlayerData(Define.GOLD);
+                            Player.SavePlayerData(Define.HUOJIA_TYPE);
+                            Player.SavePlayerData(Define.HUO_JIA_DIRECTION);
+                            Player.SavePlayerData(Define.HUO_JIA_LEVEL);
+
 
 
                         }
-                        else{
+                        else
+                        {
                             Debug.Log("这个地方不能建造！");
                             DataManager.Instance.msgText = "检查位置否正确  建造失败";
                             UIManager.Instance.ShowMessagePanel();

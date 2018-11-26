@@ -97,6 +97,10 @@ public class Player
     //货架等级 <位置,货架等级>
     public static Dictionary<int, int> huojiaLevel = new Dictionary<int, int>();
 
+    //货架位置和物体 不需要保存在本地，但是需要在开始游戏后 加载
+    public static Dictionary<int, GameObject> huojiaObjs = new Dictionary<int, GameObject>();
+
+
     //测试使用 删除本地数据 字典手动去 streaming asset 里删除
     public static void DelPlayerData()
     {
@@ -123,6 +127,104 @@ public class Player
         IJson.WriteJsonToFile(Define.HUO_JIA_SALE_TIMES, huojiaSaleTimes);
         IJson.WriteJsonToFile(Define.HUO_JIA_LEVEL, huojiaLevel);
 
+    }
+
+
+    public static void SavePlayerData(string _name)
+    {
+        switch (_name)
+        {
+            case (Define.PLAYER_LEVEL):
+                {
+                    PlayerPrefs.SetInt(Define.PLAYER_LEVEL, PlayerLevel);
+
+                }
+                break;
+            case (Define.PLAYER_EXP):
+                {
+
+                    PlayerPrefs.SetInt(Define.PLAYER_EXP, PlayerExp);
+
+                }
+                break;
+            case (Define.SHOP_LEVEL):
+                {
+
+                    PlayerPrefs.SetInt(Define.SHOP_LEVEL, ShopLevel);
+
+                }
+                break;
+            case (Define.SHOP_EXP):
+                {
+
+                    PlayerPrefs.SetInt(Define.SHOP_EXP, ShopExp);
+
+                }
+                break;
+            case (Define.GOLD):
+                {
+
+                    PlayerPrefs.SetInt(Define.GOLD, GoldNum);
+
+                }
+                break;
+            case (Define.DIAMOND):
+                {
+
+                    PlayerPrefs.SetInt(Define.DIAMOND, DiamondNum);
+
+                }
+                break;
+            case (Define.SHOP_STOCK):
+                {
+                    IJson.WriteJsonToFile(Define.SHOP_STOCK, ShopStock);
+                }
+                break;
+            case (Define.HUOJIA_TYPE):
+                {
+
+                    IJson.WriteJsonToFile(Define.HUOJIA_TYPE, huojiaType);
+
+                }
+                break;
+            case (Define.GOODS_TYPE_SHOW):
+                {
+
+                    IJson.WriteJsonToFile(Define.GOODS_TYPE_SHOW, huojiaGoodsType);
+
+                }
+                break;
+            case (Define.GOODS_NUMBER_SHOW):
+                {
+
+                    IJson.WriteJsonToFile(Define.GOODS_NUMBER_SHOW, huojiaNumber);
+
+                }
+                break;
+            case (Define.HUO_JIA_DIRECTION):
+                {
+
+                    IJson.WriteJsonToFile(Define.HUO_JIA_DIRECTION, huojiaDiretion);
+
+                }
+                break;
+            case (Define.HUO_JIA_SALE_TIMES):
+                {
+
+                    IJson.WriteJsonToFile(Define.HUO_JIA_SALE_TIMES, huojiaSaleTimes);
+
+
+                }
+                break;
+            case (Define.HUO_JIA_LEVEL):
+                {
+
+                    IJson.WriteJsonToFile(Define.HUO_JIA_LEVEL, huojiaLevel);
+
+
+                }
+                break;
+        }
     }
 
     public static bool GetPlayerData()
