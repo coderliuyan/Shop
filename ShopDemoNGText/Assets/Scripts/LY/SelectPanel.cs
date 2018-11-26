@@ -351,6 +351,11 @@ public class SelectPanel : MonoBehaviour {
 
             //首先创建一个货架
             GameObject huojiaObj = Instantiate(Resources.Load("HJPrefab/HJFruit" + huojiaId) as GameObject);
+            //获取到创建物体下面的goods 
+            GameObject goods = huojiaObj.transform.Find("goods").gameObject;
+            Goods go =  goods.GetComponent<Goods>();
+            go.huojiaID = huojiaId;
+
             Debug.Log("检查了路径，并有有效路径。");
 
             FloorManager.Instance.FetchActiveFloor();

@@ -91,6 +91,48 @@ namespace Common{
             return null;
         }
 
+        public static Dictionary<int, string> LoadJsonStringWithPath(string jsonName)
+        {
+            string path =
+#if UNITY_ANDROID && !UNITY_EDITOR   //安卓  
+    "jar:file://" + Application.dataPath + "!/assets/ + jsonName";
+#elif UNITY_IPHONE  //iPhone  
+    Application.dataPath + "/Raw/" + jsonName;  
+#elif UNITY_STANDALONE_WIN || UNITY_EDITOR  //windows平台和web平台  
+    Application.dataPath + "/StreamingAssets/" + jsonName;
+#else
+        string.Empty;  
+#endif
+            try
+            {
+                if (!File.Exists(path))
+                    return null;
+                StreamReader sr = new StreamReader(path);
+                if (sr == null)
+                    return null;
+                String json = sr.ReadToEnd();
+                JsonData data = JsonMapper.ToObject(json);
+                sr.Close();
+                sr.Dispose();
+
+                Dictionary<int, string> dic = new Dictionary<int, string>();
+
+                foreach (var d in data.Keys)
+                {
+                    int key = int.Parse(d.ToString());
+                    string value = data[d].ToString();
+                    dic.Add(key, value);
+                }
+
+                return dic;
+            }
+            catch (Exception error)
+            {
+                Debug.LogError(error.Message);
+            }
+
+            return null;
+        }
 
 
 
@@ -110,6 +152,21 @@ namespace Common{
             return WriteJsonToFile(fileName, dicStr);
         }
 
+        
+        public static bool WriteJsonToFile(string fileName, Dictionary<int, string> dic)
+        {
+            Dictionary<string, string> dicStr = new Dictionary<string, string>();
+
+            foreach (int key in dic.Keys)
+            {
+                string keyStr = key.ToString();
+                string valueStr = dic[key];
+
+                dicStr.Add(keyStr,valueStr);
+            }
+
+            return WriteJsonToFile(fileName, dicStr);
+        }
 
 
 

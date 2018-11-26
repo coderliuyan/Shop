@@ -113,8 +113,12 @@ public class BuyPanel_allUI : MonoBehaviour
                 obj.transform.localScale = Vector3.one;
                 obj.name = fruitsNum.ToString();
                 fruitsNum += 1;
-                obj.GetComponent<UIDragScrollView>().scrollView = _huowuType.transform.parent.GetComponent<UIScrollView>();             
-                if(goodsLevel<=APIData.PlayerLevel)
+                obj.GetComponent<UIDragScrollView>().scrollView = _huowuType.transform.parent.GetComponent<UIScrollView>();
+
+                //测试
+                Player.PlayerLevel = 9;
+
+                if(goodsLevel<=Player.PlayerLevel)
                 {
                  obj.transform.Find("Button").GetComponent<UIButton>().onClick.Add(new EventDelegate(() => { BuyGoodsButton(goodsId); })); 
                 }
@@ -293,6 +297,6 @@ public class BuyPanel_allUI : MonoBehaviour
 
     void CangkuUI(short _id, int _num)
     {
-        transform.parent.Find("SelectPanel").GetComponent<SelectPanelUI>().CahngkuUI( _id,  _num);
+        transform.parent.Find("SelectPanel").GetComponent<SelectPanel>().CahngkuUI( _id,  _num);
     }
 }

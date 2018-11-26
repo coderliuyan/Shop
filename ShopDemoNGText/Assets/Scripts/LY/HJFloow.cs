@@ -63,6 +63,9 @@ public class HJFloow : MonoBehaviour {
                             isMove = false;
                             this.gameObject.AddComponent<SphereCollider>().radius = 0.5f;
                             this.gameObject.tag = "huojia";
+
+
+
                         }else{
                             Debug.Log("这个地方不能建造！");
                             DataManager.Instance.msgText = "检查位置否正确  建造失败";

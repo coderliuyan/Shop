@@ -45,9 +45,6 @@ public class FloorManager : MonoBehaviour {
     //不能建造的区域的位置
     [HideInInspector] public  List<int> noBuildArea ;
 
- 
-
-
 
     //获取所有的地板
     public void FetchAllFloor()
@@ -146,7 +143,6 @@ public class FloorManager : MonoBehaviour {
         allTheWays = new List<List<int>>();
         custormWay = new List<int>();
         noBuildArea = new List<int>();
-
 
         //赋值
         FetchAllFloor();
@@ -469,35 +465,9 @@ public class FloorManager : MonoBehaviour {
             return true;
         }
 
-
-        //Debug.Log("--------------------------");
-        //foreach (int a in array) {
-            
-        //    Debug.Log("===================" + a);
-          
-        //}
-
-        //Debug.Log("--------------------------");
         return CheckBuildFloor(array);
     }
 
-    ///下面都是要删掉的 测试用
-    ///
-    /// <summary>
-    /// 生成顾客
-    /// </summary>
-    /// 
-   
-    GameObject BornCustomer()
-    {
-
-      
-        GameObject _BornPlace = GameObject.Find("CustomerBornPlace");
-        GameObject CustomerCubeObj = (GameObject)Instantiate(Resources.Load("Test"), _BornPlace.transform.position, Quaternion.Euler(0, 0, 0));
-
-        return CustomerCubeObj;
-
-    }
 
 
 }

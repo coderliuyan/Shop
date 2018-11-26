@@ -142,6 +142,13 @@ public class GameManager : MonoBehaviour {
         goodsObj.GetComponent<SpriteRenderer>().sprite = LoadSpriteWithPath(path);
         goodsObj.GetComponent<SpriteRenderer>().sortingOrder = obj.GetComponent<SpriteRenderer>().sortingOrder + 10;
 
+        //点击补货之后floor manager要计算出那些地方可以和顾客交互,交互的货架的物体也要存起来,当然还要存货架类型,对应类型才会停下来交互
+        int huojiaPos = GetObjName(obj.transform.parent.gameObject);
+        Debug.Log(huojiaPos);
+        int huojiaID = goodsObj.GetComponent<Goods>().huojiaID;
+        Debug.Log(huojiaID);
+
+
     }
 
 
@@ -181,5 +188,12 @@ public class GameManager : MonoBehaviour {
         double.TryParse(m.Groups[0].ToString(), out d);
         int result = int.Parse (d.ToString());
         return result;
+    }
+
+    //获取物体名字中包含的数字
+    public int GetObjName(GameObject _obj)
+    {
+        int numInt1 = System.Convert.ToInt32(System.Text.RegularExpressions.Regex.Replace(_obj.transform.name, @"[^0-9]+", ""));
+        return numInt1;
     }
 }

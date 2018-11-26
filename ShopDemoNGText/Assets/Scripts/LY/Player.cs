@@ -79,7 +79,7 @@ public class Player
 
     //一个货架 我理解为一个NPC一样
     //店铺里面的货架位置,货架类型 <位置,类型>
-    public static Dictionary<int, int> huojiaType = new Dictionary<int, int>();
+    public static Dictionary<int, string> huojiaType = new Dictionary<int, string>();
 
     //货架上面摆放的货物种类 <位置,货物种类>
     public static Dictionary<int, int> huojiaGoodsType = new Dictionary<int, int>();
@@ -158,7 +158,7 @@ public class Player
 
         if (IJson.LoadJsonWithPath(Define.HUOJIA_TYPE) != null)
         {
-            huojiaType = IJson.LoadJsonWithPath(Define.HUOJIA_TYPE);
+            huojiaType = IJson.LoadJsonStringWithPath(Define.HUOJIA_TYPE);
             haveData = true;
         }
 
