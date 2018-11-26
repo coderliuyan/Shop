@@ -79,7 +79,7 @@ public class Player
 
     //一个货架 我理解为一个NPC一样
     //店铺里面的货架位置,货架类型 <位置,类型>
-    public static Dictionary<int, string> huojiaType = new Dictionary<int, string>();
+    public static Dictionary<int, int> huojiaType = new Dictionary<int, int>();
 
     //货架上面摆放的货物种类 <位置,货物种类>
     public static Dictionary<int, int> huojiaGoodsType = new Dictionary<int, int>();
@@ -87,6 +87,15 @@ public class Player
     //货架上摆放的物品所剩的数量<位置,货物量>
     public static Dictionary<int, int> huojiaNumber = new Dictionary<int, int>();
 
+    //货架朝向 <位置,朝向> 1 - 4
+    public static Dictionary<int, int> huojiaDiretion = new Dictionary<int, int>();
+
+    //货架可销售次数剩余 <位置,sale times>
+    public static Dictionary<int, int> huojiaSaleTimes = new Dictionary<int, int>();
+
+
+    //货架等级 <位置,货架等级>
+    public static Dictionary<int, int> huojiaLevel = new Dictionary<int, int>();
 
     //测试使用 删除本地数据 字典手动去 streaming asset 里删除
     public static void DelPlayerData()
@@ -109,6 +118,10 @@ public class Player
         IJson.WriteJsonToFile(Define.HUOJIA_TYPE, huojiaType);
         IJson.WriteJsonToFile(Define.GOODS_TYPE_SHOW, huojiaGoodsType);
         IJson.WriteJsonToFile(Define.GOODS_NUMBER_SHOW, huojiaNumber);
+
+        IJson.WriteJsonToFile(Define.HUO_JIA_DIRECTION, huojiaDiretion);
+        IJson.WriteJsonToFile(Define.HUO_JIA_SALE_TIMES, huojiaSaleTimes);
+        IJson.WriteJsonToFile(Define.HUO_JIA_LEVEL, huojiaLevel);
 
     }
 
@@ -158,7 +171,7 @@ public class Player
 
         if (IJson.LoadJsonWithPath(Define.HUOJIA_TYPE) != null)
         {
-            huojiaType = IJson.LoadJsonStringWithPath(Define.HUOJIA_TYPE);
+            huojiaType = IJson.LoadJsonWithPath(Define.HUOJIA_TYPE);
             haveData = true;
         }
 
@@ -172,6 +185,23 @@ public class Player
         if (IJson.LoadJsonWithPath(Define.GOODS_NUMBER_SHOW) != null)
         {
             huojiaNumber = IJson.LoadJsonWithPath(Define.GOODS_NUMBER_SHOW);
+            haveData = true;
+        }
+
+        if (IJson.LoadJsonWithPath(Define.HUO_JIA_DIRECTION) != null)
+        {
+            huojiaDiretion = IJson.LoadJsonWithPath(Define.HUO_JIA_DIRECTION);
+            haveData = true;
+        }
+        if (IJson.LoadJsonWithPath(Define.HUO_JIA_SALE_TIMES) != null)
+        {
+            huojiaSaleTimes = IJson.LoadJsonWithPath(Define.HUO_JIA_SALE_TIMES);
+            haveData = true;
+        }
+
+        if (IJson.LoadJsonWithPath(Define.HUO_JIA_LEVEL) != null)
+        {
+            huojiaLevel = IJson.LoadJsonWithPath(Define.HUO_JIA_LEVEL);
             haveData = true;
         }
 

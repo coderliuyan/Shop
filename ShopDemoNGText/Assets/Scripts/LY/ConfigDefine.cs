@@ -47,6 +47,18 @@
         //货架货物余量
         public const string GOODS_NUMBER_SHOW = "huojiaGoodsNumber";
 
+
+        //货架朝向 <位置,朝向> 1 - 4
+        public const string HUO_JIA_DIRECTION = "huojiaDirection";
+
+        //货架可销售次数剩余 <位置,sale times>
+        public const string HUO_JIA_SALE_TIMES = "huojiaSaleTimes";
+
+        //货架等级
+        public const string HUO_JIA_LEVEL = "huojiaLevel";
+
+
+
     }
 
 }

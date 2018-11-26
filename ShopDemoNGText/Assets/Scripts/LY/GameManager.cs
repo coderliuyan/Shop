@@ -165,6 +165,8 @@ public class GameManager : MonoBehaviour {
             imgNumber = 1;
         }
 
+        obj.GetComponent<HuoJiaController>().huojiaDirection = imgNumber;
+
         obj.gameObject.GetComponent<SpriteRenderer>().sprite = LoadSpriteWithPath(huojiaPath+imgNumber);
     }
 

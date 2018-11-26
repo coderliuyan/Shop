@@ -343,7 +343,18 @@ public class SelectPanel : MonoBehaviour {
        
 
         Debug.Log("d点击了货架。" + huojiaId);
-      
+
+        int huojiaMoney = DataManager.Instance.huojiaXml.GetInt(huojiaId,"coin");
+        Debug.Log(huojiaMoney);
+        if(Player.GoldNum < huojiaMoney)
+        {
+            DataManager.Instance.msgText = "想啥呢，钱不够！";
+            UIManager.Instance.ShowMessagePanel();
+            return;
+        }
+        
+        //钱够的话，把这个数字要传进去 点击建造的时候 要在玩家身上减去 
+
         
         //首先 检查一下不能交互的区域
         if (FloorManager.Instance.FetchActiveWay())
@@ -351,10 +362,20 @@ public class SelectPanel : MonoBehaviour {
 
             //首先创建一个货架
             GameObject huojiaObj = Instantiate(Resources.Load("HJPrefab/HJFruit" + huojiaId) as GameObject);
+
+            HuoJiaController hjc = huojiaObj.GetComponent<HuoJiaController>();
+            hjc.huojiaLevel = 1;
+            hjc.huojiaDirection = 1;
+            int saleTimes = DataManager.Instance.huojiaXml.GetInt(huojiaId,"sales");
+            hjc.saleTimes = saleTimes;
+            hjc.huojiaID = huojiaId;
+
+
+
             //获取到创建物体下面的goods 
-            GameObject goods = huojiaObj.transform.Find("goods").gameObject;
-            Goods go =  goods.GetComponent<Goods>();
-            go.huojiaID = huojiaId;
+            //GameObject goods = huojiaObj.transform.Find("goods").gameObject;
+            //Goods go =  goods.GetComponent<Goods>();
+            //go.huojiaID = huojiaId;
 
             Debug.Log("检查了路径，并有有效路径。");
 

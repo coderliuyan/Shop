@@ -56,6 +56,16 @@ public class HJFloow : MonoBehaviour {
                     if (hit.transform.tag == "Floor" && hit.transform.parent.parent.childCount <= 2)
                     {
 
+                        HuoJiaController hjc = transform.GetComponent<HuoJiaController>();
+                        int huojiaId =  hjc.huojiaID;
+                        int coins = DataManager.Instance.huojiaXml.GetInt(huojiaId,"coins");
+                        if(Player.GoldNum < coins)
+                        {
+                            DataManager.Instance.msgText = "钱不够，不能建造！";
+                            UIManager.Instance.ShowMessagePanel();
+                            return;
+                        }
+
                         Debug.Log(hit.transform.parent.parent.gameObject.name);
                         int index = GetObjName(hit.transform.parent.parent.gameObject);
                         if (FloorManager.Instance.floorInterable.ContainsKey(index))
@@ -64,9 +74,28 @@ public class HJFloow : MonoBehaviour {
                             this.gameObject.AddComponent<SphereCollider>().radius = 0.5f;
                             this.gameObject.tag = "huojia";
 
+                            Player.GoldNum -= coins;
+                            if (Player.huojiaDiretion.ContainsKey(index))
+                            {
+                                Player.huojiaDiretion.Remove(index);
+                            }
+                            Player.huojiaDiretion.Add(index,hjc.huojiaDirection);
+                            if (Player.huojiaLevel.ContainsKey(index))
+                            {
+                                Player.huojiaLevel.Remove(index);
+                            }
+                            Player.huojiaLevel.Add(index, hjc.huojiaLevel);
+                            if (Player.huojiaSaleTimes.ContainsKey(index))
+                            {
+                                Player.huojiaSaleTimes.Remove(index);
+                            }
+                            Player.huojiaSaleTimes.Add(index, hjc.saleTimes);
+
+                            Player.SavePlayerData();
 
 
-                        }else{
+                        }
+                        else{
                             Debug.Log("这个地方不能建造！");
                             DataManager.Instance.msgText = "检查位置否正确  建造失败";
                             UIManager.Instance.ShowMessagePanel();
