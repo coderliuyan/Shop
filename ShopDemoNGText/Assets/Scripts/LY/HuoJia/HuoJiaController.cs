@@ -19,6 +19,9 @@ public class HuoJiaController : MonoBehaviour {
     //货架的朝向 1 是默认方向 。  1 - 4 为北 西 南 动 
     public int huojiaDirection = 1;
 
+    //添加的货物类型
+    public int goodsType;
+
     //货物的数量 
     public int goodsNumber = 0;
 

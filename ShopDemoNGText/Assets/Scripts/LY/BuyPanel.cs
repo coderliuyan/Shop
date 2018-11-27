@@ -137,11 +137,6 @@ public class BuyPanel : MonoBehaviour {
     void ClickJieSuanButton()
     {
 
-#if TEST
-        Player.GoldNum = 1000;
-#endif
-
-
         //结算 , 钱不够 提示 - > message panel , 钱够 结算 -> 存入shop  stock
         if(totalPrice > Player.GoldNum){
             //钱不够 
@@ -162,7 +157,7 @@ public class BuyPanel : MonoBehaviour {
         //提取数据进行存储
         for (int i = 0; i < gouwuCheTran.childCount; i++)
         {
-            short _Linid = short.Parse(gouwuCheTran.GetChild(i).gameObject.name);
+            int _Linid = int.Parse(gouwuCheTran.GetChild(i).gameObject.name);
             string numstring = gouwuCheTran.GetChild(i).gameObject.transform.Find("FirstNameNum").GetComponent<UILabel>().text;
             int numInt1 = System.Convert.ToInt32(System.Text.RegularExpressions.Regex.Replace(numstring, @"[^0-9]+", ""));
             //SaveGoodsNum(_Linid, numInt1);
@@ -176,8 +171,8 @@ public class BuyPanel : MonoBehaviour {
             {
                 Player.ShopStock.Add(_Linid,numInt1);
             }
-            SelectPanel.selectManager.CahngkuUI(_Linid,numInt1);
-
+            //SelectPanel.selectManager.CahngkuUI(_Linid,numInt1);
+            SelectPanel.selectManager.UpdateCangkuUI();
 
 
 

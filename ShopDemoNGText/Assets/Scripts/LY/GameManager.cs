@@ -221,6 +221,13 @@ public class GameManager : MonoBehaviour {
         {
             case ("水果货架"):
                 {
+                    if(Player.ShopStock.ContainsKey(hjc.goodsType))
+                    {
+                        tempKey = hjc.goodsType;
+                        goodsNumber = Player.ShopStock[hjc.goodsType];
+                        break;
+                    }
+                    //没有同样的货的时候 拿最高级的货出来 
                     foreach(int key in Player.ShopStock.Keys)
                     {
                         if(DataManager.Instance.goodsData.GetString(key,"type") == "水果类")
@@ -274,6 +281,14 @@ public class GameManager : MonoBehaviour {
             return;
         }
 
+        if(hjc.goodsType != tempKey && hjc.goodsNumber != 0)
+        {
+            DataManager.Instance.msgText = "想卖更高级的货？先买完货架上的物品";
+            UIManager.Instance.ShowMessagePanel();
+            return;
+        }
+
+
         int reduceGoodsNumber = maxGoodsNumber - hjc.goodsNumber;
 
         if (spriteName != "" && goodsNumber != 0)
@@ -299,7 +314,7 @@ public class GameManager : MonoBehaviour {
             Player.SavePlayerData(ConfigDefine.Define.SHOP_STOCK);
             SelectPanel.selectManager.UpdateCangkuUI();
             hjc.saleTimes = saleTimes;
-            
+            hjc.goodsType = tempKey;
         }
         else
         {

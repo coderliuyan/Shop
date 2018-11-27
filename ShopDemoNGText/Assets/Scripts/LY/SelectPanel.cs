@@ -548,6 +548,7 @@ public class SelectPanel : MonoBehaviour {
         CustomerNeed ctn = newCustomer.GetComponent<CustomerNeed>();
         ctn.customerID = customerId;
         ctn.buyTimes = DataManager.Instance.customerXml.GetInt(customerId, "boneNum");
+        ctn.goodsType = DataManager.Instance.customerXml.GetString(customerId,"cusNeed");
         tempCustomers.Add(newCustomer);
 
         UnityArmatureComponent arc = newCustomer.GetComponent<UnityArmatureComponent>();
