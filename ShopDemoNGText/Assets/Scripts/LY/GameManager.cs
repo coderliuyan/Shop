@@ -169,14 +169,27 @@ public class GameManager : MonoBehaviour {
     //升级货架
     void UpdataHuoJia(GameObject obj)
     {
+        int pos = GetObjName(obj.transform.parent.gameObject);
         HuoJiaController hjc = obj.GetComponent<HuoJiaController>();
         int coins = DataManager.Instance.huojiaXml.GetInt(hjc.huojiaID + hjc.huojiaLevel, "coin");
+        Debug.Log("coins = " +  coins);
         if(Player.GoldNum >= coins)
         {
+#pragma 这个地方还要加上 最高级数判断 
+
             //可以升级货架
             Player.GoldNum -= coins;
             Player.SavePlayerData(ConfigDefine.Define.GOLD);
             hjc.huojiaLevel++;
+
+            if (Player.huojiaLevel.ContainsKey(pos))
+            {
+                Player.huojiaLevel.Remove(pos);
+            }
+            Player.huojiaLevel.Add(pos, hjc.huojiaLevel);
+            Player.SavePlayerData(ConfigDefine.Define.HUO_JIA_LEVEL);
+
+            SelectPanel.selectManager.moneyLabel.text = Player.GoldNum.ToString();
             DataManager.Instance.msgText = "货架成功升级到" + hjc.huojiaLevel + "级！";
             UIManager.Instance.ShowMessagePanel();
         }

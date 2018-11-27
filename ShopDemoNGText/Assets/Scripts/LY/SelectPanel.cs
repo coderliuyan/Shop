@@ -472,6 +472,9 @@ public class SelectPanel : MonoBehaviour {
         
         int customerId = CustomerManager.Instance.customerIDList[randomNum];
 
+        //目前只有一个顾客的龙骨资源找到了
+        customerId = CustomerManager.Instance.customerIDList[0];
+
         //创建的顾客会是随机产生 在这里 需要创建多个 顾客预设体 ,然后随机数调用
         GameObject newCustomer = Instantiate(Resources.Load("CustomerPrefab/Customer" + customerId) as GameObject,Vector3.zero,Quaternion.identity);
         newCustomer.transform.SetParent(bornObj.transform);

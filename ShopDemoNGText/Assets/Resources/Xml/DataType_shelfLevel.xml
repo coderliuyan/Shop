@@ -48,7 +48,7 @@
   <shelf_10005>
     <name>水果货架</name>
     <Level>5</Level>
-    <coin>1,180</coin>
+    <coin>1180</coin>
     <stuff/>
     <nums/>
     <time>280</time>
@@ -59,7 +59,7 @@
   <shelf_10006>
     <name>水果货架</name>
     <Level>6</Level>
-    <coin>1,815</coin>
+    <coin>1815</coin>
     <stuff/>
     <nums/>
     <time>400</time>
@@ -70,7 +70,7 @@
   <shelf_10007>
     <name>水果货架</name>
     <Level>7</Level>
-    <coin>2,660</coin>
+    <coin>2660</coin>
     <stuff/>
     <nums/>
     <time>560</time>
@@ -81,7 +81,7 @@
   <shelf_10008>
     <name>水果货架</name>
     <Level>8</Level>
-    <coin>3,745</coin>
+    <coin>3745</coin>
     <stuff/>
     <nums/>
     <time>780</time>
@@ -92,7 +92,7 @@
   <shelf_10009>
     <name>水果货架</name>
     <Level>9</Level>
-    <coin>5,100</coin>
+    <coin>5100</coin>
     <stuff/>
     <nums/>
     <time>1080</time>
@@ -103,7 +103,7 @@
   <shelf_10010>
     <name>水果货架</name>
     <Level>10</Level>
-    <coin>7,570</coin>
+    <coin>7570</coin>
     <stuff/>
     <nums/>
     <time>1530</time>

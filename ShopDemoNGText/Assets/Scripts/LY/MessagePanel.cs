@@ -13,7 +13,6 @@ public class MessagePanel : MonoBehaviour {
 
     private void OnEnable()
     {
-        Debug.Log("msg msg ++++++++++++");
         msgLabel.GetComponent<UILabel>().text = DataManager.Instance.msgText;
         msgLabel.DOLocalMoveY(-180f, 1f).SetEase(Ease.Linear).OnComplete(delegate {
             msgLabel.localPosition = new Vector3(0, -212f, 0);

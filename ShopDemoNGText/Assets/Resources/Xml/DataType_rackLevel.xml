@@ -53,7 +53,7 @@
     <name>水果货架</name>
     <type>水果类</type>
     <Level>5</Level>
-    <coin>1,180</coin>
+    <coin>1180</coin>
     <stuff/>
     <nums/>
     <time>280</time>
@@ -65,7 +65,7 @@
     <name>水果货架</name>
     <type>水果类</type>
     <Level>6</Level>
-    <coin>1,815</coin>
+    <coin>1815</coin>
     <stuff/>
     <nums/>
     <time>400</time>
@@ -77,7 +77,7 @@
     <name>水果货架</name>
     <type>水果类</type>
     <Level>7</Level>
-    <coin>2,660</coin>
+    <coin>2660</coin>
     <stuff/>
     <nums/>
     <time>560</time>
@@ -89,7 +89,7 @@
     <name>水果货架</name>
     <type>水果类</type>
     <Level>8</Level>
-    <coin>3,745</coin>
+    <coin>3745</coin>
     <stuff/>
     <nums/>
     <time>780</time>
@@ -101,7 +101,7 @@
     <name>水果货架</name>
     <type>水果类</type>
     <Level>9</Level>
-    <coin>5,100</coin>
+    <coin>5100</coin>
     <stuff/>
     <nums/>
     <time>1080</time>
@@ -113,7 +113,7 @@
     <name>水果货架</name>
     <type>水果类</type>
     <Level>10</Level>
-    <coin>7,570</coin>
+    <coin>7570</coin>
     <stuff/>
     <nums/>
     <time>1530</time>
@@ -125,7 +125,7 @@
     <name>水果货架</name>
     <type>水果类</type>
     <Level>11</Level>
-    <coin>11,095</coin>
+    <coin>11095</coin>
     <stuff/>
     <nums/>
     <time>2100</time>
