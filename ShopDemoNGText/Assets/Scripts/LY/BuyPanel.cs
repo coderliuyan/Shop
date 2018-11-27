@@ -128,6 +128,8 @@ public class BuyPanel : MonoBehaviour {
         dianziBtn.onClick.Add(new EventDelegate(() => { ChooseTypeButton("电子商品类"); }));
         shechipinBtn.onClick.Add(new EventDelegate(() => { ChooseTypeButton("奢侈品类"); }));
 
+        //默认是水果界面
+        ChooseTypeButton("水果类");
     }
 
     //点击了结算按钮

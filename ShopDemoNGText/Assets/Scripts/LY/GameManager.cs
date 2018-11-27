@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour {
 
 
     private string huojiaPath = @"UIHuoJia/Goods/fruit_huojia";
-    private string fruitPath = @"UIHuoJia/Goods/fruit";
+    private string fruitPath = @"UIHuoJia/Goods/";
 
     private bool isClickFunctionMenu = false;
 
@@ -207,13 +207,107 @@ public class GameManager : MonoBehaviour {
     //补货
     private void BuhuoWork(GameObject obj)
     {
-        //先获取货架信息，货架类型， 货架等级 ，可以拜访的物品，再匹配拥有的物品 如果有点击后进行拜访 如果无 进行提示
+        //先获取货架信息，货架类型， 货架等级 ，可以摆放的物品，再匹配拥有的物品 如果有点击后进行拜访 如果无 进行提示
         GameObject goodsObj = obj.transform.Find("goods").gameObject;
 
-        int playerLevel = 1;
-        string path = fruitPath + playerLevel;
-        goodsObj.GetComponent<SpriteRenderer>().sprite = LoadSpriteWithPath(path);
-        goodsObj.GetComponent<SpriteRenderer>().sortingOrder = obj.GetComponent<SpriteRenderer>().sortingOrder + 10;
+        HuoJiaController hjc = obj.GetComponent<HuoJiaController>();
+
+        string huojiaType = DataManager.Instance.huojiaXml.GetString(hjc.huojiaID,"name");
+
+        string spriteName= "";
+        int goodsNumber = 0;
+        int tempKey = 0;
+        switch (huojiaType)
+        {
+            case ("水果货架"):
+                {
+                    foreach(int key in Player.ShopStock.Keys)
+                    {
+                        if(DataManager.Instance.goodsData.GetString(key,"type") == "水果类")
+                        {
+                            spriteName = DataManager.Instance.goodsData.GetString(key,"name");
+                            goodsNumber = Player.ShopStock[key];
+                            tempKey = key;
+                        }
+                    }
+                }
+                break;
+            case ("饮料货架"):
+                {
+
+                }
+                break;
+            case ("日用品货架"):
+                {
+
+                }
+                break;
+            case ("蔬菜货架"):
+                {
+
+                }
+                break;
+            case ("体育用品货架"):
+                {
+
+                }
+                break;
+            case ("奢侈品货架"):
+                {
+
+                }
+                break;
+            case ("电子产品货架"):
+                {
+
+                }
+                break;
+        }
+
+        int huojiaId = hjc.huojiaLevel + hjc.huojiaID - 1;
+        int saleTimes = DataManager.Instance.huojiaXml.GetInt(huojiaId, "sales");
+        int maxGoodsNumber = hjc.huojiaLevel * 100;
+        if(hjc.goodsNumber >= maxGoodsNumber)
+        {
+            DataManager.Instance.msgText = "不缺货呀，缺心眼吧。";
+            UIManager.Instance.ShowMessagePanel();
+            return;
+        }
+
+        int reduceGoodsNumber = maxGoodsNumber - hjc.goodsNumber;
+
+        if (spriteName != "" && goodsNumber != 0)
+        {
+            string path = fruitPath + spriteName;
+            goodsObj.GetComponent<SpriteRenderer>().sprite = LoadSpriteWithPath(path);
+            goodsObj.GetComponent<SpriteRenderer>().sortingOrder = obj.GetComponent<SpriteRenderer>().sortingOrder + 10;
+
+            if(goodsNumber >= reduceGoodsNumber)
+            {
+                goodsNumber -= reduceGoodsNumber;
+                hjc.goodsNumber += reduceGoodsNumber;
+                Player.ShopStock[tempKey] = goodsNumber;
+            }
+            else
+            {
+                saleTimes = saleTimes * goodsNumber / reduceGoodsNumber;
+                hjc.goodsNumber += goodsNumber;
+                goodsNumber = 0;
+                Player.ShopStock.Remove(tempKey);
+            }
+
+            Player.SavePlayerData(ConfigDefine.Define.SHOP_STOCK);
+            SelectPanel.selectManager.UpdateCangkuUI();
+            hjc.saleTimes = saleTimes;
+            
+        }
+        else
+        {
+            DataManager.Instance.msgText = @"没有货哟，去进点货吧。";
+            UIManager.Instance.ShowMessagePanel();
+        }
+
+      
 
         //点击补货之后floor manager要计算出那些地方可以和顾客交互,交互的货架的物体也要存起来,当然还要存货架类型,对应类型才会停下来交互
         //int huojiaPos = GetObjName(obj.transform.parent.gameObject);
@@ -221,9 +315,8 @@ public class GameManager : MonoBehaviour {
         //int huojiaID = goodsObj.GetComponent<Goods>().huojiaID;
         //Debug.Log(huojiaID);
 
-        HuoJiaController hjc = obj.GetComponent<HuoJiaController>();
-        int huojiaId = hjc.huojiaLevel + hjc.huojiaID - 1;
-        hjc.saleTimes = DataManager.Instance.huojiaXml.GetInt(huojiaId,"sales");
+      //  HuoJiaController hjc = obj.GetComponent<HuoJiaController>();
+      
 
 
     }

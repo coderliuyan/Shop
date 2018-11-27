@@ -326,6 +326,27 @@ public class SelectPanel : MonoBehaviour {
 
     }
 
+    public void UpdateCangkuUI()
+    {
+        UnityEngine.Transform ptran = cangchuUI.Find("cunfangUI");
+
+        Debug.Log(ptran.childCount);
+        for (int i = ptran.childCount; i > 0; i--)
+        {
+            Destroy(ptran.GetChild(i - 1).gameObject);
+        }
+
+        foreach (var item in Player.ShopStock)
+        {
+            Debug.Log(item.Key);
+            if (item.Value != 0)
+            {
+                CahngkuUI(item.Key, item.Value);
+            }
+        }
+    }
+
+
     public void CahngkuUI(int _id, int _num)
     {
         GameObject CucunGoodsObj = ((GameObject)Instantiate(Resources.Load("UI/CangchuGood")));
@@ -592,6 +613,7 @@ public class SelectPanel : MonoBehaviour {
                     ctn.buyTimes--;
                     huojiaSaleTimes--;
                     huojiaObj.GetComponent<HuoJiaController>().saleTimes = huojiaSaleTimes;
+                    huojiaObj.GetComponent<HuoJiaController>().goodsNumber -= 100;
                 }
                 if (huojiaSaleTimes == 0)
                 {
@@ -617,6 +639,7 @@ public class SelectPanel : MonoBehaviour {
                     ctn.buyTimes--;
                     huojiaSaleTimes--;
                     huojiaObj.GetComponent<HuoJiaController>().saleTimes = huojiaSaleTimes;
+                    huojiaObj.GetComponent<HuoJiaController>().goodsNumber -= 100;
                 }
                 if (huojiaSaleTimes == 0)
                 {
@@ -642,6 +665,7 @@ public class SelectPanel : MonoBehaviour {
                     ctn.buyTimes--;
                     huojiaSaleTimes--;
                     huojiaObj.GetComponent<HuoJiaController>().saleTimes = huojiaSaleTimes;
+                    huojiaObj.GetComponent<HuoJiaController>().goodsNumber -= 100;
                 }
 
                 if (huojiaSaleTimes == 0)

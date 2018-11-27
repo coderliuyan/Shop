@@ -4,7 +4,7 @@ using UnityEngine;
 using ConfigDefine;
 public class HJFloow : MonoBehaviour {
 
-    private bool isMove = true;
+    public bool isMove = true;
     RaycastHit hit = new RaycastHit();
     // Use this for initialization
     void Start () {
@@ -13,6 +13,12 @@ public class HJFloow : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            isMove = true;
+        }
+
         if (isMove)
         {
 #if UNITY_EDITOR
