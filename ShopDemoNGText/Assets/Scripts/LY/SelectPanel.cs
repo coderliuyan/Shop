@@ -397,6 +397,7 @@ public class SelectPanel : MonoBehaviour {
             //Player.ShopStock.Add(1008, 100);
             //Player.ShopStock.Add(1010, 100);
             Player.GoldNum += 1000;
+            Player.PlayerLevel += 3;
         }
 
     }

@@ -281,6 +281,9 @@ public class GameManager : MonoBehaviour {
             return;
         }
 
+        Debug.Log(hjc.goodsType);
+        Debug.Log(tempKey);
+
         if(hjc.goodsType != tempKey && hjc.goodsNumber != 0)
         {
             DataManager.Instance.msgText = "想卖更高级的货？先买完货架上的物品";
@@ -291,13 +294,15 @@ public class GameManager : MonoBehaviour {
 
         int reduceGoodsNumber = maxGoodsNumber - hjc.goodsNumber;
 
+        Debug.Log("!!!!!!!!!!!!!!" + spriteName);
+        Debug.Log("!!!!!!!!!!!!!!" + goodsNumber);
         if (spriteName != "" && goodsNumber != 0)
         {
             string path = fruitPath + spriteName;
             goodsObj.GetComponent<SpriteRenderer>().sprite = LoadSpriteWithPath(path);
             goodsObj.GetComponent<SpriteRenderer>().sortingOrder = obj.GetComponent<SpriteRenderer>().sortingOrder + 10;
 
-            if(goodsNumber >= reduceGoodsNumber)
+            if(goodsNumber > reduceGoodsNumber)
             {
                 goodsNumber -= reduceGoodsNumber;
                 hjc.goodsNumber += reduceGoodsNumber;
