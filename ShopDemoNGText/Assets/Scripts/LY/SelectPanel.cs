@@ -43,6 +43,8 @@ public class SelectPanel : MonoBehaviour {
     private string jinhuoBtnPath = @"ShangCheng/jinhuoButton";
     UIButton jinhuoBtn;
 
+    private string buyGoodsBtnPath = @"ShangCheng/CangkuButton/Diban/cangkuUI/BuyMore";
+    UIButton buyGoodsBtn;
 
     #endregion
 
@@ -117,6 +119,18 @@ public class SelectPanel : MonoBehaviour {
     #endregion
 
 
+    //底部栏的选中状态
+    enum SelectState
+    {
+        huojiaState,
+        goodsState,
+        haoyouState,
+        jinhuState,
+        daojuState
+    }
+
+    SelectState currentState = SelectState.huojiaState;
+
     void InitComponet()
     {
 
@@ -146,6 +160,8 @@ public class SelectPanel : MonoBehaviour {
         jinhuoBtn = transform.Find(jinhuoBtnPath).GetComponent<UIButton>();
         jinhuoBtn.onClick.Add(new EventDelegate(() => { ClickToolBarButton(jinhuoBtn); }));
 
+        buyGoodsBtn = transform.Find(buyGoodsBtnPath).GetComponent<UIButton>();
+        buyGoodsBtn.onClick.Add(new EventDelegate(() => { ClickToolBarButton(buyGoodsBtn); }));
         #endregion 获取按钮 绑定事件结束
 
 
@@ -221,27 +237,45 @@ public class SelectPanel : MonoBehaviour {
             case ("daojuButton"):
                 {
                     UIManager.Instance.NoOpen();
+                    currentState = SelectState.haoyouState;
                 }
                 break;
 
             case ("jinhuoButton"):
                 {
+                    currentState = SelectState.jinhuState;
                     UIManager.Instance.ShowBuyPanel();
+                   
                 }
                 break;
             case ("CangkuButton"):
                 {
                     Debug.Log("点击了 仓库 按钮");
                     //仓库里面所有的内容 显示出来 对应的货架的要隐藏
+                    currentState = SelectState.goodsState;
                     OpenBuyPanelButton(cangchuUI,true);
                     OpenBuyPanelButton(zhuangxiuUI,false);
+                   
                 }
                 break;
             case ("ZhuangxiuButton"):
                 {
+                    currentState = SelectState.huojiaState;
                     Debug.Log("点击了 装修 按钮");
                     OpenBuyPanelButton(cangchuUI, false);
                     OpenBuyPanelButton(zhuangxiuUI, true);
+                  
+                }
+                break;
+            case ("BuyMore"):
+                {
+                    Debug.Log("点击了 仓库 按钮");
+                    //仓库里面所有的内容 显示出来 对应的货架的要隐藏
+                    currentState = SelectState.goodsState;
+                    UIManager.Instance.ShowBuyPanel();
+                    //OpenBuyPanelButton(cangchuUI, true);
+                    //OpenBuyPanelButton(zhuangxiuUI, false);
+
                 }
                 break;
 
@@ -302,6 +336,15 @@ public class SelectPanel : MonoBehaviour {
         CucunGoodsObj.transform.localPosition = Vector3.zero;
         CucunGoodsObj.transform.localScale = Vector3.one;
         _CunfangUI.GetComponent<UIGrid>().enabled = true;
+        if(currentState != SelectState.goodsState)
+        {
+            cangchuUI.gameObject.SetActive(false);
+        }
+        else
+        {
+            cangchuUI.gameObject.SetActive(true);
+        }
+        
     }
 
     private void Awake()
