@@ -501,6 +501,9 @@ public class SelectPanel : MonoBehaviour {
 
         //顾客这个动画播放完成之后 销毁对象
 
+        jinbi = Player.GoldNum;
+        exp = Player.PlayerExp;
+        koubei = 1;
         StartCoroutine(StartGame());
 
         
@@ -514,8 +517,6 @@ public class SelectPanel : MonoBehaviour {
     {
         while(boss.State == Boss.GameState.Shoping)
         {
-            jinbi += 10;
-            exp += 1;
             yield return new WaitForSeconds(Define.CUSTOMER_TIME);
            
             StartCoroutine(GoShoping());
@@ -538,7 +539,7 @@ public class SelectPanel : MonoBehaviour {
         int customerId = CustomerManager.Instance.customerIDList[randomNum];
 
         //目前只有一个顾客的龙骨资源找到了
-        customerId = CustomerManager.Instance.customerIDList[0];
+        customerId = CustomerManager.Instance.customerIDList[Random.Range(0,1)];
 
         //创建的顾客会是随机产生 在这里 需要创建多个 顾客预设体 ,然后随机数调用
         GameObject newCustomer = Instantiate(Resources.Load("CustomerPrefab/Customer" + customerId) as GameObject,Vector3.zero,Quaternion.identity);
@@ -616,6 +617,14 @@ public class SelectPanel : MonoBehaviour {
                     huojiaSaleTimes--;
                     huojiaObj.GetComponent<HuoJiaController>().saleTimes = huojiaSaleTimes;
                     huojiaObj.GetComponent<HuoJiaController>().goodsNumber -= 100;
+                    if (ctn.goods.ContainsKey(huojiaObj.GetComponent<HuoJiaController>().goodsType))
+                    {
+                        ctn.goods[huojiaObj.GetComponent<HuoJiaController>().goodsType] += 100;
+                    }
+                    else
+                    {
+                        ctn.goods.Add(huojiaObj.GetComponent<HuoJiaController>().goodsType, 100);
+                    }
                 }
                 if (huojiaSaleTimes == 0)
                 {
@@ -642,6 +651,14 @@ public class SelectPanel : MonoBehaviour {
                     huojiaSaleTimes--;
                     huojiaObj.GetComponent<HuoJiaController>().saleTimes = huojiaSaleTimes;
                     huojiaObj.GetComponent<HuoJiaController>().goodsNumber -= 100;
+                    if (ctn.goods.ContainsKey(huojiaObj.GetComponent<HuoJiaController>().goodsType))
+                    {
+                        ctn.goods[huojiaObj.GetComponent<HuoJiaController>().goodsType] += 100;
+                    }
+                    else
+                    {
+                        ctn.goods.Add(huojiaObj.GetComponent<HuoJiaController>().goodsType, 100);
+                    }
                 }
                 if (huojiaSaleTimes == 0)
                 {
@@ -668,6 +685,14 @@ public class SelectPanel : MonoBehaviour {
                     huojiaSaleTimes--;
                     huojiaObj.GetComponent<HuoJiaController>().saleTimes = huojiaSaleTimes;
                     huojiaObj.GetComponent<HuoJiaController>().goodsNumber -= 100;
+                    if (ctn.goods.ContainsKey(huojiaObj.GetComponent<HuoJiaController>().goodsType))
+                    {
+                        ctn.goods[huojiaObj.GetComponent<HuoJiaController>().goodsType] += 100;
+                    }
+                    else
+                    {
+                        ctn.goods.Add(huojiaObj.GetComponent<HuoJiaController>().goodsType, 100);
+                    }
                 }
 
                 if (huojiaSaleTimes == 0)
@@ -691,12 +716,30 @@ public class SelectPanel : MonoBehaviour {
                 yield return new WaitForSeconds(0.5f);
 
                 //结账结束后 添加玩家金钱 其实是要根据每一个顾客是否买到了对应产品 是否满意来进行操作的
-                //假设每一个人是 10块钱 
-                Player.GoldNum += 100;
-                moneyLabel.text = Player.GoldNum.ToString();
+                
+                if(ctn.buyTimes > 0)
+                {
+                    //没有买到足够的商品 不结账
+                    DataManager.Instance.msgText = "没有买到足够的商品，摔货。";
+                    UIManager.Instance.ShowMessagePanel();
+                    koubei = 0; //只要有一个没有完美接待的 口碑不涨。
+                }
+                else
+                {
+                    foreach (int goodsNum in ctn.goods.Keys)
+                    {
+                        int salePrice = DataManager.Instance.goodsData.GetInt(goodsNum,"sell");
+                        Player.GoldNum += salePrice * ctn.goods[goodsNum];
 
-                Player.PlayerExp += 1;
+                    }
+                    Player.PlayerExp += 1;
+                }
+
+
+                ctn.goods.Clear();
+                moneyLabel.text = Player.GoldNum.ToString();
                 playerExpLabel.text = Player.PlayerExp.ToString();
+
 
 
             }
@@ -732,10 +775,12 @@ public class SelectPanel : MonoBehaviour {
         while(true){
             yield return new WaitForSeconds(Define.CUSTOMER_TIME);
             if(tempCustomers.Count == 0){
-                koubei += 1;
                 Player.ShopLevel += koubei;
                 shopLevelLabel.text = Player.ShopLevel.ToString();
 
+                jinbi = Player.GoldNum - jinbi;
+                exp = Player.PlayerExp - exp;
+                
                 //到最后一个人结束 在调用 
                 UIManager.Instance.ShowJiesuanPanel();
 

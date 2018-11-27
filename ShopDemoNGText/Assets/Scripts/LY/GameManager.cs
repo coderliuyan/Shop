@@ -57,12 +57,12 @@ public class GameManager : MonoBehaviour {
     // Update is called once per frame
     void Update () {
         //test
-        //if (Input.GetKeyDown(KeyCode.Space))
-        //{
-        //    int shopid = 2001;
-        //   int str =   _ShopXml.GetInt(shopid,"Exp");
-        //    Debug.Log(str);
-        //}
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            CustomerFetchPanel.Instance.customerName = "樱石头像";
+            CustomerFetchPanel.Instance.customerID = 3002;
+            UIManager.Instance.ShowCustomerFetchPanel();
+        }
 
         //test over
 
@@ -224,6 +224,7 @@ public class GameManager : MonoBehaviour {
                     if(Player.ShopStock.ContainsKey(hjc.goodsType))
                     {
                         tempKey = hjc.goodsType;
+                        spriteName = DataManager.Instance.goodsData.GetString(tempKey, "name");
                         goodsNumber = Player.ShopStock[hjc.goodsType];
                         break;
                     }
@@ -283,6 +284,8 @@ public class GameManager : MonoBehaviour {
 
         Debug.Log(hjc.goodsType);
         Debug.Log(tempKey);
+        Debug.Log(spriteName);
+        Debug.Log(goodsNumber);
 
         if(hjc.goodsType != tempKey && hjc.goodsNumber != 0)
         {
@@ -294,8 +297,6 @@ public class GameManager : MonoBehaviour {
 
         int reduceGoodsNumber = maxGoodsNumber - hjc.goodsNumber;
 
-        Debug.Log("!!!!!!!!!!!!!!" + spriteName);
-        Debug.Log("!!!!!!!!!!!!!!" + goodsNumber);
         if (spriteName != "" && goodsNumber != 0)
         {
             string path = fruitPath + spriteName;

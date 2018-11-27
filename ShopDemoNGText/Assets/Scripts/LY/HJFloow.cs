@@ -14,10 +14,6 @@ public class HJFloow : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        if (Input.GetKeyDown(KeyCode.M))
-        {
-            isMove = true;
-        }
 
         if (isMove)
         {

@@ -17,7 +17,7 @@ public class CustomerNeed : MonoBehaviour {
     //买的货物类型 比如说水果 
     public string goodsType;
 
-    //买到的货物类型 和数量
+    //买到的货物具体的种类 和数量
     public Dictionary<int, int> goods = new Dictionary<int, int>();
 
     //说的话 目前还没有

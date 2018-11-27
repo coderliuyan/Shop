@@ -12,7 +12,7 @@
         public const int OUT_DOOR_POS = 61;
 
         //产出小人的基础时间间隔
-        public const float CUSTOMER_TIME = 1.5f;
+        public const float CUSTOMER_TIME = 2.5f;
 
 
         //玩家等级

@@ -71,9 +71,6 @@ public class JiesuanPanel : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if(Input.GetKeyDown(KeyCode.A)){
-            Debug.Log("A");
-            Debug.Log( DataManager.Instance.playerXml.GetInt(1001,"Exp"));
-        }
+       
 	}
 }

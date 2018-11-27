@@ -166,10 +166,12 @@ public class BuyPanel : MonoBehaviour {
             if (Player.ShopStock.ContainsKey(_Linid))
             {
                 Player.ShopStock[_Linid] += numInt1;
+                Debug.Log(_Linid + "           "+numInt1);
             }
             else
             {
                 Player.ShopStock.Add(_Linid,numInt1);
+                Debug.Log(_Linid + "           " + numInt1);
             }
             //SelectPanel.selectManager.CahngkuUI(_Linid,numInt1);
             SelectPanel.selectManager.UpdateCangkuUI();
@@ -177,7 +179,7 @@ public class BuyPanel : MonoBehaviour {
 
 
         }
-        Player.SavePlayerData();
+        Player.SavePlayerData(ConfigDefine.Define.SHOP_STOCK);
 
         for (int i = 0; i < gouwuCheTran.transform.childCount; i++)
         {

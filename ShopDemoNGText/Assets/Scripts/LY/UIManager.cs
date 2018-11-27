@@ -16,8 +16,11 @@ public class UIManager : Singleton<UIManager> {
     private string messagePanelPath = @"MessagePanel";
     GameObject messagePanel;
 
-	// Use this for initialization
-	void Start () {
+    private string customerFetchPanelPath = @"CustomerFetchPanel";
+    GameObject customerFetchPanel;
+
+    // Use this for initialization
+    void Start () {
         //初始化组件
         InitPanel();
 	}
@@ -28,6 +31,7 @@ public class UIManager : Singleton<UIManager> {
         buyPanel = transform.Find(buyPanelPath).gameObject;
         jiesuanPanel = transform.Find(jiesuanUIPath).gameObject;
         messagePanel = transform.Find(messagePanelPath).gameObject;
+        customerFetchPanel = transform.Find(customerFetchPanelPath).gameObject;
     }
 	
 	// Update is called once per frame
@@ -59,5 +63,10 @@ public class UIManager : Singleton<UIManager> {
     public void ShowMessagePanel()
     {
         messagePanel.SetActive(true);
+    }
+
+    public void ShowCustomerFetchPanel()
+    {
+        customerFetchPanel.SetActive(true);
     }
 }
