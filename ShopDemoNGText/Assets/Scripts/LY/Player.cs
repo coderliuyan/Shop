@@ -77,6 +77,11 @@ public class Player
     /// </summary>
     public static Dictionary<int, int> ShopStock = new Dictionary<int, int>();
 
+    /// <summary>
+    /// 货架 id
+    /// </summary>
+    public static List<int> Huojia = new List<int>();
+
     //一个货架 我理解为一个NPC一样
     //店铺里面的货架位置,货架类型 <位置,类型>
     public static Dictionary<int, int> huojiaType = new Dictionary<int, int>();

@@ -326,6 +326,28 @@ public class SelectPanel : MonoBehaviour {
 
     }
 
+    public void UpdateHuojiaUI()
+    {
+        UnityEngine.Transform ptran = cangchuUI.Find("HuojiaGameObject");
+
+        Debug.Log(ptran.childCount);
+        for (int i = ptran.childCount; i > 0; i--)
+        {
+            Destroy(ptran.GetChild(i - 1).gameObject);
+        }
+
+        foreach (var item in Player.ShopStock)
+        {
+            Debug.Log(item.Key);
+            if (item.Value != 0)
+            {
+                CahngkuUI(item.Key, item.Value);
+            }
+        }
+    }
+
+
+
     public void UpdateCangkuUI()
     {
         UnityEngine.Transform ptran = cangchuUI.Find("cunfangUI");

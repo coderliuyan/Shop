@@ -33,9 +33,10 @@ public class CustomerFetchPanel : MonoBehaviour {
 
     void ClickQuding()
     {
-        //添加到顾客数组
-        CustomerManager.Instance.customerIDList.Add(customerID);
+        CustomerPanel.customerID = customerID;
 
+        //打开人物解锁界面
+        UIManager.Instance.ShowCustomerPanel();
         gameObject.SetActive(false);
     }
 

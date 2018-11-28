@@ -238,7 +238,23 @@ public class GameManager : MonoBehaviour {
                 break;
             case ("饮料货架"):
                 {
-
+                    if (Player.ShopStock.ContainsKey(hjc.goodsType))
+                    {
+                        tempKey = hjc.goodsType;
+                        spriteName = DataManager.Instance.goodsData.GetString(tempKey, "name");
+                        goodsNumber = Player.ShopStock[hjc.goodsType];
+                        break;
+                    }
+                    //没有同样的货的时候 拿最高级的货出来 
+                    foreach (int key in Player.ShopStock.Keys)
+                    {
+                        if (DataManager.Instance.goodsData.GetString(key, "type") == "饮料类")
+                        {
+                            spriteName = DataManager.Instance.goodsData.GetString(key, "name");
+                            goodsNumber = Player.ShopStock[key];
+                            tempKey = key;
+                        }
+                    }
                 }
                 break;
             case ("日用品货架"):
@@ -277,11 +293,6 @@ public class GameManager : MonoBehaviour {
             UIManager.Instance.ShowMessagePanel();
             return;
         }
-
-        Debug.Log(hjc.goodsType);
-        Debug.Log(tempKey);
-        Debug.Log(spriteName);
-        Debug.Log(goodsNumber);
 
         if(hjc.goodsType != tempKey && hjc.goodsNumber != 0)
         {
