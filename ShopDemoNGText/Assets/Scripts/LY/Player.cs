@@ -54,7 +54,7 @@ public class Player
     /// <summary>
     /// 本地存储数据的店铺口碑等级
     /// </summary>
-    public static int ShopLevel = 1;
+    public static int ShopLevel = 0;
 
     /// <summary>
     /// 本地存储数据的玩家等级当前的经验值。

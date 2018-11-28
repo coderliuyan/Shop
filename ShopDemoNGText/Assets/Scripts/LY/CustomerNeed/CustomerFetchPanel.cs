@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CustomerFetchPanel : Singleton<CustomerFetchPanel> {
+public class CustomerFetchPanel : MonoBehaviour {
+
+    private string lvPath = @"LvSprite";
+    UISprite lvSprite;
 
     private string touxiangPath = @"peopleSprite";
     UISprite touXiangSprite;
@@ -10,20 +13,22 @@ public class CustomerFetchPanel : Singleton<CustomerFetchPanel> {
     private string quedingPath = @"QuedingButton";
     UIButton quedingBtn;
 
-    public string customerName;
-    public int customerID;
+    public static string customerName;
+    public static int customerID;
 	// Use this for initialization
 	void Start () {
-        Transform t = transform.Find(touxiangPath);
-        //.GetComponent<UISprite>();
-        Transform tt = transform.Find(quedingPath);
-        quedingBtn = tt.GetComponent<UIButton>();
-        quedingBtn.onClick.Add(new EventDelegate (()=> { ClickQuding(); }));
-	}
+
+    }
 
     private void OnEnable()
     {
+        lvSprite = transform.Find(lvPath).GetComponent<UISprite>();
+        touXiangSprite = transform.Find(touxiangPath).GetComponent<UISprite>();
+        quedingBtn = transform.Find(quedingPath).GetComponent<UIButton>();
+
+        lvSprite.spriteName = (3001 + Player.ShopLevel).ToString();
         touXiangSprite.spriteName = customerName;
+        quedingBtn.onClick.Add(new EventDelegate( () => { ClickQuding(); }));
     }
 
     void ClickQuding()

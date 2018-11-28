@@ -33,10 +33,9 @@ public class JiesuanPanel : MonoBehaviour {
     void ClickQuding()
     {
         Player.ShopLevel += SelectPanel.selectManager.koubei;
+        SelectPanel.selectManager.shopLevelLabel.text = Player.ShopLevel.ToString();
         Player.SavePlayerData();
-        SelectPanel.selectManager.koubei = 0;
-        SelectPanel.selectManager.jinbi = 0;
-        SelectPanel.selectManager.exp = 0;
+  
 
         //读取表数据 看看 人物是否可以升级 
         int playerId = Player.PlayerLevel + 1000;
@@ -52,9 +51,17 @@ public class JiesuanPanel : MonoBehaviour {
         //激活 select panel 底部 的button 
 
         SelectPanel.selectManager.ChangeButtonState(true);
-
-
+        Debug.Log(Player.ShopLevel);
+        if(SelectPanel.selectManager.koubei > 0)
+        {
+            JiesuoCustomer();
+        }
+        SelectPanel.selectManager.koubei = 0;
+        SelectPanel.selectManager.jinbi = 0;
+        SelectPanel.selectManager.exp = 0;
         gameObject.SetActive(false);
+
+     
     }
 
 
@@ -64,6 +71,35 @@ public class JiesuanPanel : MonoBehaviour {
         jinbiLabel.text = "+" + SelectPanel.selectManager.jinbi;
         jinyanLabel.text = "+" + SelectPanel.selectManager.exp;
     }
+
+    //依靠口碑等级 解锁顾客
+    private void JiesuoCustomer()
+    {
+        switch (Player.ShopLevel)
+        {
+            case (1):
+                {
+                    CustomerFetchPanel.customerName = "樱石头像";
+                    CustomerFetchPanel.customerID = 3002;
+                    UIManager.Instance.ShowCustomerFetchPanel();
+                }
+                break;
+            case (2):
+                {
+                    
+                }
+                break;
+            default:
+                Debug.Log("该等级没有可解锁的人物");
+                break;
+
+        }
+    }
+
+
+
+
+
     // Use this for initialization
     void Start () {
 		

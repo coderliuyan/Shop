@@ -531,15 +531,10 @@ public class SelectPanel : MonoBehaviour {
         GameObject outDoorObj = FloorManager.Instance.allFloor[Define.OUT_DOOR_POS];
         GameObject bornObj = FloorManager.Instance.allFloor[Define.BORN_POS];
         int randomNum = 0;
-        if (Player.ShopLevel > 1)
-        {
-            randomNum = Random.Range(0, Player.ShopLevel - 1);
-        }
-        
+        randomNum = Random.Range(0, CustomerManager.Instance.customerIDList.Count);
         int customerId = CustomerManager.Instance.customerIDList[randomNum];
 
-        //目前只有一个顾客的龙骨资源找到了
-        customerId = CustomerManager.Instance.customerIDList[Random.Range(0,1)];
+        customerId = CustomerManager.Instance.customerIDList[randomNum];
 
         //创建的顾客会是随机产生 在这里 需要创建多个 顾客预设体 ,然后随机数调用
         GameObject newCustomer = Instantiate(Resources.Load("CustomerPrefab/Customer" + customerId) as GameObject,Vector3.zero,Quaternion.identity);
@@ -775,8 +770,6 @@ public class SelectPanel : MonoBehaviour {
         while(true){
             yield return new WaitForSeconds(Define.CUSTOMER_TIME);
             if(tempCustomers.Count == 0){
-                Player.ShopLevel += koubei;
-                shopLevelLabel.text = Player.ShopLevel.ToString();
 
                 jinbi = Player.GoldNum - jinbi;
                 exp = Player.PlayerExp - exp;

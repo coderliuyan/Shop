@@ -54,15 +54,11 @@ public class GameManager : MonoBehaviour {
         return ShopExpData;
     }
 
+    
     // Update is called once per frame
     void Update () {
         //test
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            CustomerFetchPanel.Instance.customerName = "樱石头像";
-            CustomerFetchPanel.Instance.customerID = 3002;
-            UIManager.Instance.ShowCustomerFetchPanel();
-        }
+        
 
         //test over
 

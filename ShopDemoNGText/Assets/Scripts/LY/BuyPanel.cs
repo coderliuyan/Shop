@@ -176,7 +176,7 @@ public class BuyPanel : MonoBehaviour {
             //SelectPanel.selectManager.CahngkuUI(_Linid,numInt1);
             SelectPanel.selectManager.UpdateCangkuUI();
 
-
+            SelectPanel.selectManager.moneyLabel.text = Player.GoldNum.ToString();
 
         }
         Player.SavePlayerData(ConfigDefine.Define.SHOP_STOCK);

@@ -9,10 +9,8 @@ public class CustomerManager : Singleton<CustomerManager> {
     int customerNumber = 13;
 	// Use this for initialization
 	void Start () {
-        for (int i = 1; i <= customerNumber; i++)
-        {
-            customerIDList.Add(3000 + i);
-        }
+        //默认的小晴人物
+        customerIDList.Add(3001);
 	}
 	
 	// Update is called once per frame
