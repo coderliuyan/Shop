@@ -146,6 +146,11 @@ public class GameManager : MonoBehaviour {
                     isClickFunctionMenu = false;
                 }
 
+                if(hit.transform.tag == "suo")
+                {
+                    UIManager.Instance.ShowDibanPanel();
+                }
+
 
             }
 
@@ -357,6 +362,7 @@ public class GameManager : MonoBehaviour {
     private void TurnHuoJia(GameObject obj)
     {
         int imgNumber = GetIndexWithString(obj.GetComponent<SpriteRenderer>().sprite.name);
+        string path = obj.GetComponent<SpriteRenderer>().sprite.name.Replace(imgNumber.ToString(),"");
         imgNumber++;
         if(imgNumber > 4)
         {
@@ -365,7 +371,7 @@ public class GameManager : MonoBehaviour {
 
         obj.GetComponent<HuoJiaController>().huojiaDirection = imgNumber;
 
-        obj.gameObject.GetComponent<SpriteRenderer>().sprite = LoadSpriteWithPath(huojiaPath+imgNumber);
+        obj.gameObject.GetComponent<SpriteRenderer>().sprite = LoadSpriteWithPath(fruitPath+path+imgNumber);
     }
 
     /// <summary>

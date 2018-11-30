@@ -46,7 +46,14 @@ public class HJFloow : MonoBehaviour {
                 if (hit.transform.tag == "Floor")
                 {
                     gameObject.transform.parent = hit.transform.parent.parent;
-                    transform.localPosition = new Vector3(0, 0.3f, 0);
+                    if (transform.name.Contains("20001"))
+                    {
+                        transform.localPosition = new Vector3(0, 0.72f, 0);
+                    }
+                    else
+                    {
+                        transform.localPosition = new Vector3(0, 0.3f, 0);
+                    }
                     transform.localRotation = Quaternion.identity;
                     transform.GetComponent<SpriteRenderer>().sortingOrder = transform.parent.gameObject.GetComponent<SpriteRenderer>().sortingOrder + 1;
                 }
@@ -120,9 +127,33 @@ public class HJFloow : MonoBehaviour {
                         }
                         else
                         {
+                            if (Player.huojiaObjs.ContainsValue(gameObject))
+                            {
+                                foreach (int key in Player.huojiaObjs.Keys)
+                                {
+                                    if (Player.huojiaObjs[key] == gameObject)
+                                    {
+                                        Player.huojiaObjs.Remove(key);
+                                    }
+                                }
+                            }
+
+                            if (Player.huojiaType.ContainsKey(index))
+                            {
+                                Player.huojiaType.Remove(index);
+                            }
+                            if (Player.huojiaDiretion.ContainsKey(index))
+                            {
+                                Player.huojiaDiretion.Remove(index);
+                            }
+                            if (Player.huojiaLevel.ContainsKey(index))
+                            {
+                                Player.huojiaLevel.Remove(index);
+                            }
                             Debug.Log("这个地方不能建造！");
                             DataManager.Instance.msgText = "检查位置否正确  建造失败";
                             UIManager.Instance.ShowMessagePanel();
+
                             Destroy(gameObject);
                             return;
                         }
@@ -130,6 +161,31 @@ public class HJFloow : MonoBehaviour {
 
                         if (!FloorManager.Instance.FetchActiveWay())
                         {
+                            //if (Player.huojiaObjs.ContainsValue(gameObject))
+                            //{
+                            //    foreach (int key in Player.huojiaObjs.Keys)
+                            //    {
+                            //        if (Player.huojiaObjs[key] == gameObject)
+                            //        {
+                            //            Player.huojiaObjs.Remove(key);
+                            //        }
+                            //    }
+                            //}
+
+                            Player.huojiaObjs.Remove(index);
+
+                            if (Player.huojiaType.ContainsKey(index))
+                            {
+                                Player.huojiaType.Remove(index);
+                            }
+                            if (Player.huojiaDiretion.ContainsKey(index))
+                            {
+                                Player.huojiaDiretion.Remove(index);
+                            }
+                            if (Player.huojiaLevel.ContainsKey(index))
+                            {
+                                Player.huojiaLevel.Remove(index);
+                            }
                             Debug.Log("这个地方不能建造！");
                             DataManager.Instance.msgText = "检查位置否正确  建造失败";
                             UIManager.Instance.ShowMessagePanel();
@@ -140,6 +196,29 @@ public class HJFloow : MonoBehaviour {
                     }
                     else
                     {
+                        int index = GetObjName(hit.transform.parent.parent.gameObject);
+                        if (Player.huojiaObjs.ContainsValue(gameObject))
+                        {
+                            foreach (int key in Player.huojiaObjs.Keys)
+                            {
+                                if (Player.huojiaObjs[key] == gameObject)
+                                {
+                                    Player.huojiaObjs.Remove(key);
+                                }
+                            }
+                        }
+                        if (Player.huojiaType.ContainsKey(index))
+                        {
+                            Player.huojiaType.Remove(index);
+                        }
+                        if (Player.huojiaDiretion.ContainsKey(index))
+                        {
+                            Player.huojiaDiretion.Remove(index);
+                        }
+                        if (Player.huojiaLevel.ContainsKey(index))
+                        {
+                            Player.huojiaLevel.Remove(index);
+                        }
                         Debug.Log("不能拜访货架， 销毁货架。");
                         DataManager.Instance.msgText = "检查位置否正确  建造失败";
                         UIManager.Instance.ShowMessagePanel();

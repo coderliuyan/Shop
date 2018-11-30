@@ -523,8 +523,8 @@ public class SelectPanel : MonoBehaviour {
 
         //顾客这个动画播放完成之后 销毁对象
 
-        jinbi = Player.GoldNum;
-        exp = Player.PlayerExp;
+        jinbi =0;
+        exp = 0;
         koubei = 1;
         StartCoroutine(StartGame());
 
@@ -747,9 +747,11 @@ public class SelectPanel : MonoBehaviour {
                     {
                         int salePrice = DataManager.Instance.goodsData.GetInt(goodsNum,"sell");
                         Player.GoldNum += salePrice * ctn.goods[goodsNum];
+                        jinbi += salePrice * ctn.goods[goodsNum];
 
                     }
                     Player.PlayerExp += 1;
+                    exp += 1;
                 }
 
 
@@ -793,7 +795,6 @@ public class SelectPanel : MonoBehaviour {
             yield return new WaitForSeconds(Define.CUSTOMER_TIME);
             if(tempCustomers.Count == 0){
 
-                jinbi = Player.GoldNum - jinbi;
                 exp = Player.PlayerExp - exp;
                 
                 //到最后一个人结束 在调用 

@@ -25,6 +25,8 @@ public class UIManager : Singleton<UIManager> {
     private string huojiaPanelPath = @"JiesuoHuojiaPanel";
     GameObject huojiaPanel;
 
+    private string dibanPanelPath = @"DibanPanel";
+    GameObject dibanPanel;
     // Use this for initialization
     void Start () {
         //初始化组件
@@ -40,6 +42,7 @@ public class UIManager : Singleton<UIManager> {
         customerFetchPanel = transform.Find(customerFetchPanelPath).gameObject;
         customerPanel = transform.Find(customerPanelPath).gameObject;
         huojiaPanel = transform.Find(huojiaPanelPath).gameObject;
+        dibanPanel = transform.Find(dibanPanelPath).gameObject;
     }
 	
 	// Update is called once per frame
@@ -86,5 +89,11 @@ public class UIManager : Singleton<UIManager> {
     public void ShowHuojiaPanel()
     {
         huojiaPanel.SetActive(true);
+    }
+
+
+    public void ShowDibanPanel()
+    {
+        dibanPanel.SetActive(true);
     }
 }

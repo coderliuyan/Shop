@@ -30,7 +30,7 @@ public class BegainGame : MonoBehaviour {
             Player.GoldNum = 5000;
             Player.PlayerLevel = 1;
             Player.PlayerExp = 0;
-            Player.ShopLevel = 1;
+            Player.ShopLevel = 0;
             Player.ShopExp = 0;
         }
 

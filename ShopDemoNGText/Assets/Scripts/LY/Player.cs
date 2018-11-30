@@ -116,6 +116,7 @@ public class Player
 
     public static void SavePlayerData()
     {
+        /*
         PlayerPrefs.SetInt(Define.PLAYER_LEVEL,PlayerLevel);
         PlayerPrefs.SetInt(Define.PLAYER_EXP, PlayerExp);
         PlayerPrefs.SetInt(Define.SHOP_LEVEL, ShopLevel);
@@ -131,12 +132,13 @@ public class Player
         IJson.WriteJsonToFile(Define.HUO_JIA_DIRECTION, huojiaDiretion);
         IJson.WriteJsonToFile(Define.HUO_JIA_SALE_TIMES, huojiaSaleTimes);
         IJson.WriteJsonToFile(Define.HUO_JIA_LEVEL, huojiaLevel);
-
+        */
     }
 
 
     public static void SavePlayerData(string _name)
     {
+        /*
         switch (_name)
         {
             case (Define.PLAYER_LEVEL):
@@ -230,6 +232,7 @@ public class Player
                 }
                 break;
         }
+        */
     }
 
     public static bool GetPlayerData()
